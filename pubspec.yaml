@@ -32,6 +32,8 @@ dependencies:
     sdk: flutter
 
   #google_fonts: ^6.2.0
+  flutter_keyboard_visibility: ^6.0.0
+
 
 
 
