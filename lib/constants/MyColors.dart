@@ -19,6 +19,7 @@ class MyColors{
   static const Color orangeColor = Colors.orange;
   static Color blueGreyColor = Colors.blueGrey;
   static Color deepBlueColor = Colors.blue.shade800;
+  static Color indigoColor = Colors.indigo;
   static const Color ashColor = Color(0xffdde2ed);
   static const Color attInitialBox = Color(0xffa1d4f3);
   static  Color graceBoxColor = Color(0xffD7CEF1);

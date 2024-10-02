@@ -4,6 +4,7 @@ import 'package:task_management_app_flutter/constants/MyColors.dart';
 import 'package:task_management_app_flutter/constants/assets_constants.dart';
 import 'package:task_management_app_flutter/constants/custom_button.dart';
 import 'package:task_management_app_flutter/constants/global_variables.dart';
+import 'package:task_management_app_flutter/constants/my_fonts.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -30,14 +31,18 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
+                    fontFamily: MyFonts.poppins,
+                    color: MyColors.blackColor
                   ),
                 ),
                 SizedBox(height: 15),
                 const Text("This productive tool is designed to help you better manage your task project-wise conveniently!",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w300,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    fontFamily: MyFonts.poppins,
+                    color: MyColors.fadedBlack
                   ),
                 ),
                 SizedBox(height: 30),
@@ -48,7 +53,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     },
                     buttonText: "Let's Start",
                     borderRadius: 20,
-                    buttonColor: Colors.indigo,
+                    buttonColor: MyColors.indigoColor,
                     textColor: MyColors.boneWhite,
                     fontWeight: FontWeight.bold,
                     buttonTextSize: 17,
