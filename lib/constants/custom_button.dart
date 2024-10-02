@@ -10,7 +10,8 @@ class CustomButton extends StatefulWidget {
   final Color? buttonColor;
   final Color? borderColor;
   final Color? textColor;
-  final bool? suffixIcon;
+  final bool? showSuffixIcon;
+  final IconData? suffixIcon;
   final double borderRadius;
   final double buttonTextSize;
   final FontWeight fontWeight;
@@ -24,8 +25,9 @@ class CustomButton extends StatefulWidget {
     this.buttonColor,
     this.borderColor,
     this.textColor,
-    this.suffixIcon = false,
+    this.showSuffixIcon = false,
     this.buttonTextSize = 18,
+    this.suffixIcon = Icons.arrow_forward,
     this.fontWeight = FontWeight.normal,
     required this.borderRadius,  // Default width value
   }) : super(key: key);
@@ -62,10 +64,12 @@ class _CustomButtonState extends State<CustomButton> {
                 color: widget.textColor == null ? MyColors.mainYellowColor : widget.textColor
             ),
           ),
+          SizedBox(width: 10),
           Visibility(
-            visible: widget.suffixIcon == true, // Show the icon if suffixIcon is true
-            child: Icon(Icons.keyboard_arrow_down_rounded,color: Colors.blueAccent,),
-          ),        ],
+            visible: widget.showSuffixIcon == true, // Show the icon if suffixIcon is true
+            child: Icon(widget.suffixIcon,color: MyColors.boneWhite,size: 18),
+          ),
+        ],
       ),
     );
   }
