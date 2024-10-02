@@ -1,1 +1,1 @@
-double horizonal_padding = 15;
+double horizontal_padding = 15;

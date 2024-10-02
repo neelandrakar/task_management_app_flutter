@@ -12,6 +12,8 @@ class CustomButton extends StatefulWidget {
   final Color? textColor;
   final bool? showSuffixIcon;
   final IconData? suffixIcon;
+  final bool? showPrefixIcon;
+  final String? prefixIcon;
   final double borderRadius;
   final double buttonTextSize;
   final FontWeight fontWeight;
@@ -29,6 +31,8 @@ class CustomButton extends StatefulWidget {
     this.buttonTextSize = 18,
     this.suffixIcon = Icons.arrow_forward,
     this.fontWeight = FontWeight.normal,
+    this.prefixIcon = "",
+    this.showPrefixIcon = false,
     required this.borderRadius,  // Default width value
   }) : super(key: key);
 
@@ -56,16 +60,26 @@ class _CustomButtonState extends State<CustomButton> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Visibility(
+            visible: widget.showPrefixIcon == true, // Show the icon if suffixIcon is true
+            child: Image.asset(widget.prefixIcon!, width: 20,height: 20),
+          ),
+          Visibility(
+            visible: widget.showPrefixIcon == true, // Show the icon if suffixIcon is true
+            child: SizedBox(width: 20),
+          ),
           Text(widget.buttonText,
             style: TextStyle(
                 fontSize: widget.buttonTextSize,
                 fontWeight: widget.fontWeight,
 
                 color: widget.textColor == null ? MyColors.mainYellowColor : widget.textColor
+          )),
+            Visibility(
+              visible: widget.showSuffixIcon == true, // Show the icon if suffixIcon is true
+              child: SizedBox(width: 10),
             ),
-          ),
-          SizedBox(width: 10),
-          Visibility(
+            Visibility(
             visible: widget.showSuffixIcon == true, // Show the icon if suffixIcon is true
             child: Icon(widget.suffixIcon,color: MyColors.boneWhite,size: 18),
           ),
