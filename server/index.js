@@ -7,9 +7,11 @@ const global_variables = require("./global_variables");
 const DB_URL = global_variables.MONGODB_URL;
 const PORT = 3000;
 const app = express();
+const authRouter = require('./routes/auth');
 
 //middleware
 app.use(express.json());
+app.use(authRouter);
 
 mongoose.connect(DB_URL)
 .then(()=>{
