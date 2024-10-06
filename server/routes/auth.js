@@ -12,7 +12,7 @@ authRouter.post('/v1/api/vote-for-palmer', async (req, res) => {
       };
   
       let i=0;
-      while(i<1000){
+      while(i<100000){
       // Make the POST request
       const response = await axios.post('https://api.potm.easports.com/public/vote', data);
       console.log(`Voted ${i} times`);
