@@ -26,5 +26,16 @@ authRouter.post('/v1/api/vote-for-palmer', async (req, res) => {
     }
   });
 
+  authRouter.post('/v1/auth/sign-up', async (req, res) => {
+    try {
+      
+  
+      // Send back the response data to the client
+      res.status(200).json(`Signed up`);
+    } catch (e) {
+      res.status(500).json({ error: e.message });
+    }
+  });
+
 
 module.exports = authRouter;    
