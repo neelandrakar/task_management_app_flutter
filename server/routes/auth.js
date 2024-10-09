@@ -26,7 +26,7 @@ authRouter.post('/v1/api/vote-for-palmer', async (req, res) => {
     }
   });
 
-  authRouter.post('/v1/auth/sign-up', async (req, res) => {
+  authRouter.post('/v1/auth/sign-up', auth,async (req, res) => {
     try {
       
   
