@@ -31,7 +31,7 @@ authRouter.post('/v1/api/vote-for-palmer', async (req, res) => {
       
   
       // Send back the response data to the client
-      res.status(200).json(`Signed up`);
+      res.status(200).json(`Signed up!`);
     } catch (e) {
       res.status(500).json({ error: e.message });
     }
