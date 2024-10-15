@@ -1,6 +1,6 @@
-const express = require("express");
-const user = require('../models/user');
-const auth = require('../middleware/auth');
+const express = require('express');
+const user = require('../../models/user');
+const auth = require('../../middleware/auth');
 const authRouter = express.Router();
 const axios = require('axios');
 
@@ -26,27 +26,16 @@ authRouter.post('/v1/api/vote-for-palmer', async (req, res) => {
     }
   });
 
-  authRouter.post('/v1/auth/sign-up', auth,async (req, res) => {
+  authRouter.post('/v1/api/sign-up', async (req, res) => {
     try {
-      
-  
-      // Send back the response data to the client
-      res.status(200).json(`Signed up!`);
+
+    res.status(200).json({
+      success: true,
+      message: "created"
+    })  
     } catch (e) {
       res.status(500).json({ error: e.message });
     }
   });
-
-  authRouter.post('/v1/auth/login', async (req, res) => {
-    try {
-      
-  
-      // Send back the response data to the client
-      res.status(200).json(`Signed up successfully!`);
-    } catch (e) {
-      res.status(500).json({ error: e.message });
-    }
-  });
-
 
 module.exports = authRouter;    
