@@ -9,12 +9,16 @@ authRouter.post("/v1/api/sign-up", async (req, res) => {
   try {
     
     const { email, mobno, username, password } = req.body;
+    let mob_email_key = "";
 
-    const sql_one = `SELECT * FROM user_tbl where email_id = "${email}" OR mobno = "${mobno}"`;
+    mob_email_key = mobno==0 ? `email_id = "${email}"` : `mobno = "${mobno}"`;
+
+    const sql_one = `SELECT * FROM user_tbl where ${mob_email_key};`;
     const sql_two = `SELECT * FROM user_tbl where username = "${username}"`;
     let hashedPassword = "NA";
 
     con.query(sql_one, (err_one, results_one) => {
+      console.log(sql_one)
       if (err_one) {
         return res.status(500).json({ 
           success: false,
