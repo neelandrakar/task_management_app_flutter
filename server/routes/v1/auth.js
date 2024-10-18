@@ -56,7 +56,7 @@ authRouter.post("/v1/api/sign-up", async (req, res) => {
 
         hashedPassword = await bcryptjs.hash(password,8);
 
-        const insert_sql = `INSERT INTO user_tbl (username, mobno, email_id) VALUES ("${username}", "${mobno}", "${email}");`
+        const insert_sql = `INSERT INTO user_tbl (username, mobno, email_id, password) VALUES ("${username}", "${mobno}", "${email}", "${hashedPassword}");`
         console.log(insert_sql);
 
         con.query(insert_sql, function (err_three, result) {  
