@@ -93,8 +93,8 @@ authRouter.post("/v1/auth/sign-in", async (req, res) => {
 
     const sql_one = `SELECT * FROM user_tbl where username = "${username}";`;
 
-    con.query(sql_one, (err_one, results_one) => {
-      console.log(sql_one)
+    con.query(sql_one, async (err_one, results_one) => {
+      // console.log(sql_one)
       if (err_one) {
         return res.status(500).json({ 
           success: false,
@@ -104,10 +104,10 @@ authRouter.post("/v1/auth/sign-in", async (req, res) => {
 
       // Check if results are not empty and print the email address
       if (results_one.length > 0) {
-        const email = results_one[0].email_id;
-        console.log(`Email: ${email}`);
+        const hashedPassword = results_one[0].password;
+        const isMatch = await bcryptjs.compare(password, hashedPassword);
+        console.log(`Password status: ${isMatch}`);
       } else {
-        console.log("No user found with the given username.");
       }
     });
 
