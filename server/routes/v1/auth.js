@@ -122,21 +122,34 @@ authRouter.post("/v1/auth/sign-in", async (req, res) => {
             hashedPassword: hashedPassword
           }
 
+          const update_token_sql = `UPDATE user_tbl SET jwt_token = "${jwt_token}" WHERE (user_id = "${user_id}");`;
+          //UPDATE JWT TOKEN
+          con.query(update_token_sql, async (err_two, results_one) => {
+            console.log(update_token_sql)
+
+            if (err_two) {
+              return res.status(500).json({ 
+                success: false,
+                msg: err_one.message
+               });
+            }
+          });
+
           return res.status(200).json({
-            success: false,
-            msg: updatedEmp
+            success: true,
+            msg: updatedEmp 
           });
 
       } else{
 
           return res.status(400).json({
-            success: true,
+            success: false,
             msg: 'Please enter correct password'
           });
       }
       } else {
         return res.status(400).json({
-          success: true,
+          success: false,
           msg: 'Please enter valid username'
         });
 
