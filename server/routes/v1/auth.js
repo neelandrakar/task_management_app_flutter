@@ -4,8 +4,8 @@ const authRouter = express.Router();
 const con = require("../../mysqlConnection"); // Import MySQL connection
 const bcryptjs = require('bcryptjs');
 
-// Get Users Route
-authRouter.post("/v1/api/sign-up", async (req, res) => {
+// SIGN UP
+authRouter.post("/v1/auth/sign-up", async (req, res) => {
   try {
     
     const { email, mobno, username, password } = req.body;
@@ -50,11 +50,12 @@ authRouter.post("/v1/api/sign-up", async (req, res) => {
 
           return res.status(409).json({
             success: false,
-            msg: `An account with the same username already exists..`
+            msg: `An account with the same username already exists...`
           })
         }
 
         hashedPassword = await bcryptjs.hash(password,8);
+        console.log(hashedPassword)
 
         const insert_sql = `INSERT INTO user_tbl (username, mobno, email_id, password) VALUES ("${username}", "${mobno}", "${email}", "${hashedPassword}");`
         console.log(insert_sql);
@@ -70,17 +71,25 @@ authRouter.post("/v1/api/sign-up", async (req, res) => {
 
           res.status(201).json({
             success: true,
-            msg: "User created successfully"
+            msg: "User has been created successfully"
           });
-      });  
-
-        
-        
+      });
       });
 
     });
+  } catch (e) {
+    res.status(500).json({ 
+      success: false,
+      msg: err.message
+     })
+    }
+});
 
-
+//SIGN IN
+authRouter.post("/v1/auth/sign-in", async (req, res) => {
+  try {
+    
+    const {username,password} = req.body;
 
   } catch (e) {
     res.status(500).json({ 
