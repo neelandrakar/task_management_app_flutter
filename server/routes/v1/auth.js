@@ -3,6 +3,7 @@ const User = require("../../models/user");
 const authRouter = express.Router();
 const con = require("../../mysqlConnection"); // Import MySQL connection
 const bcryptjs = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 // SIGN UP
 authRouter.post("/v1/auth/sign-up", async (req, res) => {
@@ -94,7 +95,7 @@ authRouter.post("/v1/auth/sign-in", async (req, res) => {
     const sql_one = `SELECT * FROM user_tbl where username = "${username}";`;
 
     con.query(sql_one, async (err_one, results_one) => {
-      // console.log(sql_one)
+      console.log(sql_one)
       if (err_one) {
         return res.status(500).json({ 
           success: false,
@@ -105,13 +106,42 @@ authRouter.post("/v1/auth/sign-in", async (req, res) => {
       // Check if results are not empty and print the email address
       if (results_one.length > 0) {
         const hashedPassword = results_one[0].password;
+        const user_id = results_one[0].user_id;
         const isMatch = await bcryptjs.compare(password, hashedPassword);
         console.log(`Password status: ${isMatch}`);
+
+        if(isMatch){
+
+          const jwt_token = jwt.sign({id: user_id},"PasswordKey");
+          console.log(jwt_token);
+
+          const updatedEmp = {
+            user_id: user_id,
+            username: username,
+            jwt_token: jwt_token,
+            hashedPassword: hashedPassword
+          }
+
+          return res.status(200).json({
+            success: false,
+            msg: updatedEmp
+          });
+
+      } else{
+
+          return res.status(400).json({
+            success: true,
+            msg: 'Please enter correct password'
+          });
+      }
       } else {
+        return res.status(400).json({
+          success: true,
+          msg: 'Please enter valid username'
+        });
+
       }
     });
-
-    res.json(sql_one)
 
   } catch (e) {
     res.status(500).json({ 
