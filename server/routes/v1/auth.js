@@ -91,10 +91,32 @@ authRouter.post("/v1/auth/sign-in", async (req, res) => {
     
     const {username,password} = req.body;
 
+    const sql_one = `SELECT * FROM user_tbl where username = "${username}";`;
+
+    con.query(sql_one, (err_one, results_one) => {
+      console.log(sql_one)
+      if (err_one) {
+        return res.status(500).json({ 
+          success: false,
+          msg: err_one.message
+         });
+      }
+
+      // Check if results are not empty and print the email address
+      if (results_one.length > 0) {
+        const email = results_one[0].email_id;
+        console.log(`Email: ${email}`);
+      } else {
+        console.log("No user found with the given username.");
+      }
+    });
+
+    res.json(sql_one)
+
   } catch (e) {
     res.status(500).json({ 
       success: false,
-      msg: err.message
+      msg: e.message
      })
     }
 });
