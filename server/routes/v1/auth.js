@@ -72,7 +72,7 @@ authRouter.post("/v1/auth/sign-up", async (req, res) => {
 
           res.status(201).json({
             success: true,
-            msg: "User has been created successfully"
+            msg: "User has been created successfully..."
           });
       });
       });
