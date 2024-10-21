@@ -14,8 +14,8 @@ authRouter.post("/v1/auth/sign-up", async (req, res) => {
 
     mob_email_key = mobno==0 ? `email_id = "${email}"` : `mobno = "${mobno}"`;
 
-    const sql_one = `SELECT * FROM user_tbl where ${mob_email_key};`;
-    const sql_two = `SELECT * FROM user_tbl where username = "${username}"`;
+    const sql_one = `SELECT * FROM user_tbl where ${mob_email_key} and d_status = 0;`;
+    const sql_two = `SELECT * FROM user_tbl where username = "${username}" and d_status = 0;`;
     let hashedPassword = "NA";
 
     con.query(sql_one, (err_one, results_one) => {
@@ -92,7 +92,7 @@ authRouter.post("/v1/auth/sign-in", async (req, res) => {
     
     const {username,password} = req.body;
 
-    const sql_one = `SELECT * FROM user_tbl where username = "${username}";`;
+    const sql_one = `SELECT * FROM user_tbl where username = "${username}" and d_status = 0;`;
 
     con.query(sql_one, async (err_one, results_one) => {
       console.log(sql_one)
