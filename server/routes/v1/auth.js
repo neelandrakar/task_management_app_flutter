@@ -150,7 +150,7 @@ authRouter.post("/v1/auth/sign-in", async (req, res) => {
       } else {
         return res.status(400).json({
           success: false,
-          msg: 'Please enter valid username'
+          msg: 'Please enter a valid username'
         });
 
       }
