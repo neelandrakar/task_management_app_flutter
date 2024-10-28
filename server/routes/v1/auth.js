@@ -135,7 +135,7 @@ authRouter.post("/v1/auth/sign-in", async (req, res) => {
             }
           });
 
-          return res.status(200).json({
+          return res.status(201).json({
             success: true,
             msg: updatedEmp 
           });
