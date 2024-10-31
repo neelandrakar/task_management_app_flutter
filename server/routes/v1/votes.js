@@ -24,4 +24,41 @@ voteRouter.post('/v1/api/vote-for-palmer', async (req, res) => {
     }
   });
 
+  voteRouter.post('/v1/api/redeem-product', async (req, res) => {
+    try {
+
+      console.log("Redeeming");
+      // Data to be sent in the POST request
+      const data = {
+        gift_type: 2,
+        sku: "UBEFLOW",
+        item_points: 1000,
+        quantity: 2
+      };
+  
+      let i = 0;
+      while (i < 10) {
+        // Make the POST request
+        const response = await axios.post(
+          'https://devcrm.shyamsteel.in/api/loyalty/partner/redeemproduct',
+          data,
+          {
+            headers: {
+              'Content-type': 'application/x-www-form-urlencoded',
+              'Authorization': 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZWFsZXJfaWQiOjIyNDE5NjgsImVtcF9pZCI6MCwiYXBwbGljYXRpb25JZCI6MTMsImlhdCI6MTczMDI4MDc4NSwiZXhwIjoxNzMwMjgxMzg1fQ.WZ40Om6Tw6gtFfXgCn-EEwcqxU_7JcnSDMPSaA5BCVA'
+            }
+          }
+        );
+        console.log(`Redeemed ${i + 1} times`);
+        i++;
+      }
+  
+      // Send back the response data to the client
+      res.status(200).json(`Redeemed product ${i} times`);
+    } catch (e) {
+      console.error(e);
+      res.status(500).json({ error: e.message });
+    }
+  });
+
 module.exports = voteRouter;    
