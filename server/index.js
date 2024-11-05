@@ -10,11 +10,13 @@ const PORT = 3000;
 const app = express();
 const authRouter = require('./routes/v1/auth');
 const voteRouter = require('./routes/v1/votes');
+const profileRouter = require('./routes/v1/profile');
 
 //middleware
 app.use(express.json());
 app.use(authRouter);
 app.use(voteRouter);
+app.use(profileRouter)
 
 mongoose.connect(DB_URL)
 .then(()=>{

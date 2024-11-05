@@ -6,7 +6,7 @@ voteRouter.post('/v1/api/vote-for-palmer', async (req, res) => {
     try {
       // Data to be sent in the POST request
       const data = {
-        nomination: "1CFoGkeELD4kocWDALJr4g"
+        nomination: "1CGiLgTLnmhrGdK3bPEdnZ"
       };
   
       let i=0;
