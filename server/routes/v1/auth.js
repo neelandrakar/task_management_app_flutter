@@ -4,6 +4,7 @@ const authRouter = express.Router();
 const con = require("../../mysqlConnection"); // Import MySQL connection
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const {identifyInputType} = require('../../utils');
 
 // SIGN UP
 authRouter.post("/v1/auth/sign-up", async (req, res) => {
@@ -91,6 +92,9 @@ authRouter.post("/v1/auth/sign-in", async (req, res) => {
   try {
     
     const {username,password} = req.body;
+
+    const inputType = identifyInputType(username);
+    console.log(`inputtype: ${inputType}`)
 
     const sql_one = `SELECT * FROM user_tbl where username = "${username}" and d_status = 0;`;
 
