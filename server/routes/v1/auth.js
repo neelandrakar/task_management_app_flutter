@@ -4,7 +4,7 @@ const authRouter = express.Router();
 const con = require("../../mysqlConnection"); // Import MySQL connection
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const {identifyInputType} = require('../../utils');
+const {identifyInputType, fetchUsername} = require('../../controller/auth_controller');
 
 // SIGN UP
 authRouter.post("/v1/auth/sign-up", async (req, res) => {
@@ -95,6 +95,8 @@ authRouter.post("/v1/auth/sign-in", async (req, res) => {
     let search_key = `username`;
     const inputType = identifyInputType(input);
     console.log(`inputtype: ${inputType}`)
+    //const getUsername = await fetchUsername(7);
+    //console.log(`getUsername: ${getUsername}`);
 
     if(inputType=='email'){
       search_key = `email_id`
