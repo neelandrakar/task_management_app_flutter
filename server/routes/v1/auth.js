@@ -91,12 +91,18 @@ authRouter.post("/v1/auth/sign-up", async (req, res) => {
 authRouter.post("/v1/auth/sign-in", async (req, res) => {
   try {
     
-    const {username,password} = req.body;
-
-    const inputType = identifyInputType(username);
+    const {input,password} = req.body;
+    let search_key = `username`;
+    const inputType = identifyInputType(input);
     console.log(`inputtype: ${inputType}`)
 
-    const sql_one = `SELECT * FROM user_tbl where username = "${username}" and d_status = 0;`;
+    if(inputType=='email'){
+      search_key = `email_id`
+    } else if(inputType=='mobno'){
+      search_key = `mobno`
+    }
+
+    const sql_one = `SELECT * FROM user_tbl where ${search_key} = "${input}" and d_status = 0;`;
 
     con.query(sql_one, async (err_one, results_one) => {
       console.log(sql_one)
@@ -111,6 +117,7 @@ authRouter.post("/v1/auth/sign-in", async (req, res) => {
       if (results_one.length > 0) {
         const hashedPassword = results_one[0].password;
         const user_id = results_one[0].user_id;
+        const username = results_one[0].username;
         const isMatch = await bcryptjs.compare(password, hashedPassword);
         console.log(`Password status: ${isMatch}`);
 
@@ -129,7 +136,7 @@ authRouter.post("/v1/auth/sign-in", async (req, res) => {
           const update_token_sql = `UPDATE user_tbl SET jwt_token = "${jwt_token}" WHERE (user_id = "${user_id}");`;
           //UPDATE JWT TOKEN
           con.query(update_token_sql, async (err_two, results_one) => {
-            console.log(update_token_sql)
+            //console.log(update_token_sql)
 
             if (err_two) {
               return res.status(500).json({ 
@@ -154,7 +161,7 @@ authRouter.post("/v1/auth/sign-in", async (req, res) => {
       } else {
         return res.status(400).json({
           success: false,
-          msg: 'Please enter a valid username'
+          msg: `Please enter a valid ${inputType}`
         });
 
       }
