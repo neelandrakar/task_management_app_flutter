@@ -18,6 +18,7 @@ const identifyInputType = (input) => {
 
 //Fetching username  
 const fetchUsername = async (user_id) => {
+  
   const sql_one = `SELECT username FROM user_tbl WHERE user_id = "${user_id}" AND d_status = 0;`;
 
   // Return a new promise

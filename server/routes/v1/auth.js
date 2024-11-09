@@ -95,8 +95,8 @@ authRouter.post("/v1/auth/sign-in", async (req, res) => {
     let search_key = `username`;
     const inputType = identifyInputType(input);
     console.log(`inputtype: ${inputType}`)
-    //const getUsername = await fetchUsername(7);
-    //console.log(`getUsername: ${getUsername}`);
+    const getUsername = await fetchUsername(7);
+    console.log(`getUsername: ${getUsername}`);
 
     if(inputType=='email'){
       search_key = `email_id`

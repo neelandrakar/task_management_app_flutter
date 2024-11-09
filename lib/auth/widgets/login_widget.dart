@@ -85,7 +85,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                     height: 0.5,
                     //width: 100,
                     color: MyColors.fadedBlack,
-                  ),
+                  ),e
                 ),
               ],
             ),
