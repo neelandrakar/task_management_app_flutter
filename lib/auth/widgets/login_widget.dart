@@ -7,6 +7,8 @@ import 'package:task_management_app_flutter/constants/assets_constants.dart';
 import 'package:task_management_app_flutter/constants/custom_button.dart';
 import 'package:task_management_app_flutter/constants/global_variables.dart';
 import 'package:task_management_app_flutter/constants/my_fonts.dart';
+import 'package:task_management_app_flutter/constants/secured_storage.dart';
+import 'package:task_management_app_flutter/home/screens/home_screen.dart';
 
 import '../../constants/custom_textfield.dart';
 
@@ -19,7 +21,7 @@ class LoginWidget extends StatefulWidget {
 
 class _LoginWidgetState extends State<LoginWidget> {
 
-  final TextEditingController _usernameController = TextEditingController();
+  TextEditingController _inputController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final _checkUsernamePasswordKey = GlobalKey<FormState>();
   AuthServices authServices = AuthServices();
@@ -49,8 +51,10 @@ class _LoginWidgetState extends State<LoginWidget> {
             ),
             SizedBox(height: 15),
             CustomButton(
-              onClick: (){
+              onClick: ()async{
                 print("Facebook");
+                String? token = await getToken('auth_key');
+                print(token);
               },
               buttonText: "Login with Facebook",
               borderRadius: 10,
@@ -93,6 +97,7 @@ class _LoginWidgetState extends State<LoginWidget> {
             ),
             SizedBox(height: 30),
             TextField(
+              controller: _inputController,
               decoration: InputDecoration(
                 hintText: 'Email/Username/Mobile No',
                 prefixIcon: const Icon(Icons.email_outlined),
@@ -103,6 +108,7 @@ class _LoginWidgetState extends State<LoginWidget> {
             ),
             SizedBox(height: 15),
             TextField(
+              controller: _passwordController,
               decoration: InputDecoration(
                 hintText: 'Password',
                 prefixIcon: const Icon(Icons.lock),
@@ -113,9 +119,16 @@ class _LoginWidgetState extends State<LoginWidget> {
             ),
             SizedBox(height: 15),
             CustomButton(
-              onClick: (){
+              onClick: ()async{
                 print("Login");
-                authServices.login(context: context, input: 'rafa', password: 'kingofclay', onSuccess: (){print('done');});
+                authServices.login(
+                    context: context,
+                    input: _inputController.text.trim(),
+                    password: _passwordController.text.trim(),
+                    onSuccess: (){
+                      print('done');
+                      Navigator.pushNamed(context, HomeScreen.routeName);
+                    });
               },
               buttonText: "Login",
               borderRadius: 10,

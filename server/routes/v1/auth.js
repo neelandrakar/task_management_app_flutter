@@ -92,6 +92,7 @@ authRouter.post("/v1/auth/sign-in", async (req, res) => {
   try {
     
     const {input,password} = req.body;
+    console.log(`${password}123`);
     let search_key = `username`;
     const inputType = identifyInputType(input);
     console.log(`inputtype: ${inputType}`)
@@ -155,13 +156,13 @@ authRouter.post("/v1/auth/sign-in", async (req, res) => {
 
       } else{
 
-          return res.status(400).json({
+          return res.status(401).json({
             success: false,
             msg: 'Please enter correct password'
           });
       }
       } else {
-        return res.status(400).json({
+        return res.status(401).json({
           success: false,
           msg: `Please enter a valid ${inputType}`
         });

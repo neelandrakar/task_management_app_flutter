@@ -11,6 +11,7 @@ void HttpErroHandeling({
   required VoidCallback onSuccess,
 }) {
   if (response.statusCode >= 200 && response.statusCode < 300) {
+    showSnackbar(context, response.body);
     // Handle success responses
     onSuccess();
   } else if (response.statusCode >= 300 && response.statusCode < 400) {
