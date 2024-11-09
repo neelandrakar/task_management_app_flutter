@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:task_management_app_flutter/constants/global_variables.dart';
+import 'package:task_management_app_flutter/constants/http_error_handeling.dart';
 import 'package:task_management_app_flutter/constants/utils.dart';
 
 class AuthServices{
@@ -27,7 +28,13 @@ class AuthServices{
             'Content-Type': 'application/json; charset=UTF-8',
           });
 
-      print(res.body);
+      HttpErroHandeling(
+          response: res,
+          context: context,
+          onSuccess: () async {
+
+          }
+      );
 
     }catch(e){
       print("Error: $e");

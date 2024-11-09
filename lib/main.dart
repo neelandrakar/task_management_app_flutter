@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:task_management_app_flutter/auth/screens/login_screen.dart';
 import 'package:task_management_app_flutter/auth/screens/welcome_screen.dart';
+import 'package:task_management_app_flutter/providers/user_privider.dart';
 import 'package:task_management_app_flutter/router.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async{
+
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context)=> UserProvider()),
+        ],
+        child: const MyApp(),
+      ));
 }
 
 class MyApp extends StatelessWidget {
