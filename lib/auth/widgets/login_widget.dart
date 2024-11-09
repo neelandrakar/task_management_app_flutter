@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:task_management_app_flutter/auth/services/auth_services.dart';
 import 'package:task_management_app_flutter/constants/MyColors.dart';
 import 'package:task_management_app_flutter/constants/assets_constants.dart';
 import 'package:task_management_app_flutter/constants/custom_button.dart';
@@ -21,6 +22,7 @@ class _LoginWidgetState extends State<LoginWidget> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final _checkUsernamePasswordKey = GlobalKey<FormState>();
+  AuthServices authServices = AuthServices();
 
   @override
   Widget build(BuildContext context) {
@@ -113,6 +115,7 @@ class _LoginWidgetState extends State<LoginWidget> {
             CustomButton(
               onClick: (){
                 print("Login");
+                authServices.login(context: context, input: 'rafa', password: 'kingofclay', onSuccess: (){print('done');});
               },
               buttonText: "Login",
               borderRadius: 10,

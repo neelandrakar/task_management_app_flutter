@@ -27,7 +27,7 @@ class AuthServices{
             'Content-Type': 'application/json; charset=UTF-8',
           });
 
-      print(res);
+      print(res.body);
 
     }catch(e){
       print("Error: $e");
