@@ -92,7 +92,6 @@ authRouter.post("/v1/auth/sign-in", async (req, res) => {
   try {
     
     const {input,password} = req.body;
-    console.log(`${password}123`);
     let search_key = `username`;
     const inputType = identifyInputType(input);
     console.log(`inputtype: ${inputType}`)
@@ -121,6 +120,7 @@ authRouter.post("/v1/auth/sign-in", async (req, res) => {
         const hashedPassword = results_one[0].password;
         const user_id = results_one[0].user_id;
         const username = results_one[0].username;
+        const creation_date = results_one[0].creation_date;
         const isMatch = await bcryptjs.compare(password, hashedPassword);
         console.log(`Password status: ${isMatch}`);
 
@@ -133,7 +133,8 @@ authRouter.post("/v1/auth/sign-in", async (req, res) => {
             user_id: user_id,
             username: username,
             jwt_token: jwt_token,
-            hashedPassword: hashedPassword
+            hashedPassword: hashedPassword,
+            creation_date: creation_date
           }
 
           const update_token_sql = `UPDATE user_tbl SET jwt_token = "${jwt_token}" WHERE (user_id = "${user_id}");`;

@@ -2,10 +2,12 @@ import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
 import 'package:task_management_app_flutter/constants/global_variables.dart';
 import 'package:task_management_app_flutter/constants/http_error_handeling.dart';
 import 'package:task_management_app_flutter/constants/secured_storage.dart';
 import 'package:task_management_app_flutter/constants/utils.dart';
+import 'package:task_management_app_flutter/providers/user_privider.dart';
 
 class AuthServices{
 
@@ -35,10 +37,14 @@ class AuthServices{
           context: context,
           onSuccess: () async {
             print('hello');
-            String jwt_token = jsonDecode(res.body)['msg']['jwt_token'];
-            // Create storage
 
+            final Map<String, dynamic> jsonResponse = jsonDecode(res.body);
+            final Map<String, dynamic> jsonMsg = jsonResponse['msg'];
+            String jsonMsgString = jsonEncode(jsonMsg);
+            String jwt_token = jsonMsg['jwt_token'];
+ 
             await saveToken(jwt_token, 'auth_key');
+            Provider.of<UserProvider>(context, listen: false).setUser(jsonMsgString);
             onSuccess.call();
           }
       );

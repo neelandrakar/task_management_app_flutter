@@ -4,11 +4,10 @@ import 'dart:convert';
 class UserModel {
   final int user_id;
   final String username;
-  final String name;
-  final int mobno;
-  final String email_id;
+  final String? name;
+  final int? mobno;
+  final String? email_id;
   final String password;
-  final int d_status;
   final String jwt_token;
   final DateTime creation_date;
   UserModel({
@@ -18,7 +17,6 @@ class UserModel {
     required this.mobno,
     required this.email_id,
     required this.password,
-    required this.d_status,
     required this.jwt_token,
     required this.creation_date,
   });
@@ -30,8 +28,7 @@ class UserModel {
       'name': name,
       'mobno': mobno,
       'email_id': email_id,
-      'password': password,
-      'd_status': d_status,
+      'hashedPassword': password,
       'jwt_token': jwt_token,
       'creation_date': creation_date,
     };
@@ -41,11 +38,10 @@ class UserModel {
     return UserModel(
       user_id: map['user_id'] as int,
       username: map['username'] as String,
-      name: map['name'] as String,
-      mobno: map['mobno'] as int,
-      email_id: map['email_id'] as String,
-      password: map['password'] as String,
-      d_status: map['d_status'] as int,
+      name: map['name'] as String? ?? '',
+      mobno: map['mobno'] as int? ?? 0, // Default value if null
+      email_id: map['email_id'] as String? ?? '', // Default value if null
+      password: map['hashedPassword'] as String,
       jwt_token: map['jwt_token'] as String,
       creation_date: DateTime.parse(map['creation_date']),
     );
@@ -54,5 +50,5 @@ class UserModel {
   String toJson() => json.encode(toMap());
 
   factory UserModel.fromJson(String source) =>
-      UserModel.fromMap(json.decode(source) as Map<String, dynamic>);
+      UserModel.fromMap(json.decode(source));
 }
