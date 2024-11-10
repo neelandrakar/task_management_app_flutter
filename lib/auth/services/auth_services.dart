@@ -42,7 +42,7 @@ class AuthServices{
             final Map<String, dynamic> jsonMsg = jsonResponse['msg'];
             String jsonMsgString = jsonEncode(jsonMsg);
             String jwt_token = jsonMsg['jwt_token'];
- 
+
             await saveToken(jwt_token, 'auth_key');
             Provider.of<UserProvider>(context, listen: false).setUser(jsonMsgString);
             onSuccess.call();

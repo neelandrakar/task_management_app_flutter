@@ -94,9 +94,9 @@ authRouter.post("/v1/auth/sign-in", async (req, res) => {
     const {input,password} = req.body;
     let search_key = `username`;
     const inputType = identifyInputType(input);
-    console.log(`inputtype: ${inputType}`)
+    //console.log(`inputtype: ${inputType}`)
     const getUsername = await fetchUsername(7);
-    console.log(`getUsername: ${getUsername}`);
+    //console.log(`getUsername: ${getUsername}`);
 
     if(inputType=='email'){
       search_key = `email_id`
@@ -122,12 +122,12 @@ authRouter.post("/v1/auth/sign-in", async (req, res) => {
         const username = results_one[0].username;
         const creation_date = results_one[0].creation_date;
         const isMatch = await bcryptjs.compare(password, hashedPassword);
-        console.log(`Password status: ${isMatch}`);
+        //console.log(`Password status: ${isMatch}`);
 
         if(isMatch){
 
           const jwt_token = jwt.sign({id: user_id},"PasswordKey");
-          console.log(jwt_token);
+          //console.log(jwt_token);
 
           const updatedEmp = {
             user_id: user_id,

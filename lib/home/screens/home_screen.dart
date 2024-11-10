@@ -16,8 +16,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
-    return Scaffold(
-      body: Center(child: Text('HOME: ${userProvider.user.username}')),
+    return WillPopScope(
+      onWillPop: () async{
+        return false;
+      },
+      child: Scaffold(
+        body: Center(child: Text('HOME: ${userProvider.user.username}')),
+      ),
     );
   }
 }
