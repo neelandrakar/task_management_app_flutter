@@ -91,7 +91,7 @@ authRouter.post("/v1/auth/sign-up", async (req, res) => {
 authRouter.post("/v1/auth/sign-in", async (req, res) => {
   try {
     
-    const {input,password} = req.body;
+    const {input,password, brand, model, device_id,os_type, os_version} = req.body;
     let search_key = `username`;
     const inputType = identifyInputType(input);
     //console.log(`inputtype: ${inputType}`)
@@ -149,6 +149,47 @@ authRouter.post("/v1/auth/sign-in", async (req, res) => {
                });
             }
           });
+
+          //Searching for log history
+          const get_login_history = `SELECT * FROM login_history_tbl WHERE user_id = ${user_id} and is_logged_in=1`;
+          con.query(get_login_history, async (log_error, log_res) => {
+            
+
+            if (log_error) {
+              return res.status(500).json({ 
+                success: false,
+                msg: err_one.message
+               });
+            }
+
+            if(log_res.length>0){
+
+              const delete_log_history = `UPDATE login_history_tbl SET is_logged_in = 0 WHERE user_id = ${user_id}`;
+              con.query(delete_log_history, async (del_log_err, del_log_res) => {
+    
+                if (del_log_err) {
+                  return res.status(500).json({ 
+                    success: false,
+                    msg: err_one.message
+                   });
+                }
+              });
+            }
+              const insert_log_data = `INSERT INTO login_history_tbl (user_id, brand, model, device_id, os_type, os_version, is_logged_in)
+               VALUES ("${user_id}", "${brand}", "${model}", "${device_id}", "${os_type}", "${os_version}", '1');`;
+              con.query(insert_log_data, async (ins_log_err, ins_log_res) => {
+    
+                if (ins_log_err) {
+                  return res.status(500).json({ 
+                    success: false,
+                    msg: err_one.message
+                  });
+                }
+              });
+            
+          });
+
+          
 
           return res.status(201).json({
             success: true,
