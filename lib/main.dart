@@ -5,16 +5,14 @@ import 'package:task_management_app_flutter/auth/screens/welcome_screen.dart';
 import 'package:task_management_app_flutter/providers/user_privider.dart';
 import 'package:task_management_app_flutter/router.dart';
 
-void main() async{
-
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (context)=> UserProvider()),
-        ],
-        child: const MyApp(),
-      ));
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (context) => UserProvider()),
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -31,7 +29,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: WelcomeScreen(),
+      home: const WelcomeScreen(),
     );
   }
 }
