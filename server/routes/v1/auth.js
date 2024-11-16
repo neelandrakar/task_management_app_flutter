@@ -118,7 +118,9 @@ authRouter.post("/v1/auth/sign-in", async (req, res) => {
       // Check if results are not empty and print the email address
       if (results_one.length > 0) {
         const hashedPassword = results_one[0].password;
-        const user_id = results_one[0].user_id;
+        const user_id = results_one[0].user_id ?? 'NA';
+        const name = results_one[0].name ?? 'NA';
+        const mobno = results_one[0].mobno ?? 0;
         const username = results_one[0].username;
         const creation_date = results_one[0].creation_date;
         const isMatch = await bcryptjs.compare(password, hashedPassword);
@@ -132,6 +134,8 @@ authRouter.post("/v1/auth/sign-in", async (req, res) => {
           const updatedEmp = {
             user_id: user_id,
             username: username,
+            name: name,
+            mobno: mobno,
             jwt_token: jwt_token,
             hashedPassword: hashedPassword,
             creation_date: creation_date
