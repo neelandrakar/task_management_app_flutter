@@ -120,7 +120,7 @@ authRouter.post("/v1/auth/sign-in", async (req, res) => {
         const hashedPassword = results_one[0].password;
         const user_id = results_one[0].user_id ?? 'NA';
         const name = results_one[0].name ?? 'NA';
-        const mobno = results_one[0].mobno ?? 0;
+        const mobno = parseInt(results_one[0].mobno) ?? 0;
         const username = results_one[0].username;
         const creation_date = results_one[0].creation_date;
         const isMatch = await bcryptjs.compare(password, hashedPassword);
@@ -204,7 +204,7 @@ authRouter.post("/v1/auth/sign-in", async (req, res) => {
 
           return res.status(401).json({
             success: false,
-            msg: 'Please enter correct password'
+            msg: 'Please enter the correct password'
           });
       }
       } else {
