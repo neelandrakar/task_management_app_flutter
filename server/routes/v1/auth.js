@@ -224,4 +224,19 @@ authRouter.post("/v1/auth/sign-in", async (req, res) => {
     }
 });
 
+//Check JWT Token
+authRouter.post('/v1/auth/checkToken', async (req,res)=>{
+
+  try{
+      
+      const token = req.header('x-auth-token');
+
+      res.json(true);
+
+  }catch(e){
+      res.status(500).json({ error: e.message });
+  }
+
+});
+
 module.exports = authRouter;
