@@ -22,7 +22,12 @@ class AuthServices{
 
       Map data = {
         "input": input,
-        "password": password
+        "password": password,
+        "brand": brand_name,
+        "model": model_name,
+        "device_id": device_id,
+        "os_type": os_type,
+        "os_version": os_version
       };
 
       String jsonBody = jsonEncode(data);

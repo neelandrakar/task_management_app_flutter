@@ -7,6 +7,8 @@ import 'package:task_management_app_flutter/constants/assets_constants.dart';
 import 'package:task_management_app_flutter/constants/custom_button.dart';
 import 'package:task_management_app_flutter/constants/my_fonts.dart';
 
+import '../../constants/global_variables.dart';
+
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
 
@@ -30,10 +32,18 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
     if (Platform.isAndroid) {
       AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-      deviceId = androidInfo.id; // Unique ID for Android
+      device_id = androidInfo.id; // Unique ID for Android
+      model_name = androidInfo.model;
+      brand_name = androidInfo.brand;
+      os_type = Platform.operatingSystem;
+      os_version = androidInfo.version.release; // OS version for Android
     } else if (Platform.isIOS) {
       IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
-      deviceId = iosInfo.identifierForVendor; // Unique ID for iOS
+      device_id = iosInfo.identifierForVendor!; // Unique ID for iOS
+      model_name = iosInfo.model;
+      brand_name = iosInfo.systemName;
+      os_type = iosInfo.systemVersion;
+      os_version = Platform.operatingSystemVersion;
     }
 
     setState(() {
@@ -85,7 +95,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   // You can use _deviceId here if needed
                   print("Device ID: $_deviceId"); // Example of using device ID
                   _fetchDeviceId();
-                  // Navigator.pushNamed(context, LoginSceen.routeName);
+                  Navigator.pushNamed(context, LoginSceen.routeName);
                 },
                 buttonText: "Let's Start",
                 borderRadius: 20,

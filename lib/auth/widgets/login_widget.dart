@@ -128,7 +128,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                     onSuccess: (){
                       print('done');
                       Navigator.pushNamed(context, HomeScreen.routeName);
-                    });
+                    },);
               },
               buttonText: "Login",
               borderRadius: 10,

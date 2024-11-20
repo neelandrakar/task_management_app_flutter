@@ -43,3 +43,12 @@ Future<String> getDeviceId() async {
 
   return deviceId ?? 'Failed to get Device ID';
 }
+
+// String getBrandName(){
+//   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+//   String deviceName = "NA";
+//   deviceName = deviceInfo.
+//
+//
+//   return deviceName;
+// }

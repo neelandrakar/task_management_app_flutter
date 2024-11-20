@@ -154,6 +154,7 @@ authRouter.post("/v1/auth/sign-in", async (req, res) => {
             }
           });
 
+          //Start
           //Searching for log history
           const get_login_history = `SELECT * FROM login_history_tbl WHERE user_id = ${user_id} and is_logged_in=1`;
           con.query(get_login_history, async (log_error, log_res) => {
@@ -167,6 +168,15 @@ authRouter.post("/v1/auth/sign-in", async (req, res) => {
             }
 
             if(log_res.length>0){
+
+              const get_device_id = log_res[0]['device_id'];
+              
+              if(get_device_id!=device_id){
+                console.log(`other device found, call socket`);
+              } else{
+                console.log(`same device found`);
+              }
+
 
               const delete_log_history = `UPDATE login_history_tbl SET is_logged_in = 0 WHERE user_id = ${user_id}`;
               con.query(delete_log_history, async (del_log_err, del_log_res) => {
@@ -187,7 +197,7 @@ authRouter.post("/v1/auth/sign-in", async (req, res) => {
                   return res.status(500).json({ 
                     success: false,
                     msg: err_one.message
-                  });
+                  }); 
                 }
               });
             
@@ -234,7 +244,7 @@ authRouter.post('/v1/auth/checkToken', async (req,res)=>{
       res.json(true);
 
   }catch(e){
-      res.status(500).json({ error: e.message });
+      res.status(500).json({ error: e.message }); 
   }
 
 });
