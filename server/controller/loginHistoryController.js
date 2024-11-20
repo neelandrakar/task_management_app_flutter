@@ -1,6 +1,6 @@
 const con = require('../mysqlConnection'); // Import your database connection
 
-const updateLoginHistory = async (user_id, deviceInfo) => {
+const updateLoginHistory = async (io, user_id, deviceInfo) => {
   const { brand, model, device_id, os_type, os_version } = deviceInfo;
 
   return new Promise((resolve, reject) => {
@@ -16,8 +16,31 @@ const updateLoginHistory = async (user_id, deviceInfo) => {
 
         if (get_device_id !== device_id) {
           console.log(`Other device found, call socket`);
+          // Emit an event to notify that a different device has logged in
+          io.emit('device_logged_in', {
+            user_id,
+            message: 'You have been logged in from a different device.',
+            deviceInfo: {
+              brand,
+              model,
+              device_id,
+              os_type,
+              os_version,
+            },
+          });
         } else {
           console.log(`Same device found`);
+          io.emit('device_logged_in', {
+            user_id,
+            message: 'Same device. OK.',
+            deviceInfo: {
+              brand,
+              model,
+              device_id,
+              os_type,
+              os_version,
+            },
+          });
         }
 
         const delete_log_history = `UPDATE login_history_tbl SET is_logged_in = 0 WHERE user_id = ${user_id}`;

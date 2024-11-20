@@ -5,6 +5,7 @@ const con = require("../../mysqlConnection"); // Import MySQL connection
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const {identifyInputType, fetchUsername} = require('../../controller/auth_controller');
+const { updateLoginHistory } = require('../../controller/loginHistoryController');
 
 // SIGN UP
 authRouter.post("/v1/auth/sign-up", async (req, res) => {
@@ -129,17 +130,6 @@ authRouter.post("/v1/auth/sign-in", async (req, res) => {
         if(isMatch){
 
           const jwt_token = jwt.sign({id: user_id},"PasswordKey");
-          //console.log(jwt_token);
-
-          const updatedEmp = {
-            user_id: user_id,
-            username: username,
-            name: name,
-            mobno: mobno,
-            jwt_token: jwt_token,
-            hashedPassword: hashedPassword,
-            creation_date: creation_date
-          }
 
           const update_token_sql = `UPDATE user_tbl SET jwt_token = "${jwt_token}" WHERE (user_id = "${user_id}");`;
           //UPDATE JWT TOKEN
@@ -154,56 +144,24 @@ authRouter.post("/v1/auth/sign-in", async (req, res) => {
             }
           });
 
-          //Start
-          //Searching for log history
-          const get_login_history = `SELECT * FROM login_history_tbl WHERE user_id = ${user_id} and is_logged_in=1`;
-          con.query(get_login_history, async (log_error, log_res) => {
-            
+          try {
+            await updateLoginHistory(req.io, user_id, { brand, model, device_id, os_type, os_version });
+          } catch (logError) {
+            return res.status(500).json({
+              success: false,
+              msg: logError.message
+            });
+          }
 
-            if (log_error) {
-              return res.status(500).json({ 
-                success: false,
-                msg: err_one.message
-               });
-            }
-
-            if(log_res.length>0){
-
-              const get_device_id = log_res[0]['device_id'];
-              
-              if(get_device_id!=device_id){
-                console.log(`other device found, call socket`);
-              } else{
-                console.log(`same device found`);
-              }
-
-
-              const delete_log_history = `UPDATE login_history_tbl SET is_logged_in = 0 WHERE user_id = ${user_id}`;
-              con.query(delete_log_history, async (del_log_err, del_log_res) => {
-    
-                if (del_log_err) {
-                  return res.status(500).json({ 
-                    success: false,
-                    msg: err_one.message
-                   });
-                }
-              });
-            }
-              const insert_log_data = `INSERT INTO login_history_tbl (user_id, brand, model, device_id, os_type, os_version, is_logged_in)
-               VALUES ("${user_id}", "${brand}", "${model}", "${device_id}", "${os_type}", "${os_version}", '1');`;
-              con.query(insert_log_data, async (ins_log_err, ins_log_res) => {
-    
-                if (ins_log_err) {
-                  return res.status(500).json({ 
-                    success: false,
-                    msg: err_one.message
-                  }); 
-                }
-              });
-            
-          });
-
-          
+          const updatedEmp = {
+            user_id: user_id,
+            username: username,
+            name: name,
+            mobno: mobno,
+            jwt_token: jwt_token,
+            hashedPassword: hashedPassword,
+            creation_date: creation_date
+          }  
 
           return res.status(201).json({
             success: true,
