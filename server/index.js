@@ -13,6 +13,7 @@ const http = require('http');
 const { initSocket } = require('./socket/socket_manager');
 var server = http.createServer(app);
 const io = initSocket(server);
+const ipAddress = '0.0.0.0';
 
 
 // Pass the io instance to the authRouter
