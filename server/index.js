@@ -13,7 +13,7 @@ const http = require('http');
 const { initSocket } = require('./socket/socket_manager');
 var server = http.createServer(app);
 const io = initSocket(server);
-const ipAddress = '0.0.0.0';
+const ipAddress = '0.0.0.0'
 
 
 // Pass the io instance to the authRouter
@@ -21,11 +21,6 @@ app.use((req, res, next) => {
     req.io = io; // Attach the io instance to the request object
     next();
 });
-
-
-server.listen(PORT, "192.168.195.6", () => {
-    console.log("socket server started");
-  });
 
 
 //middleware
@@ -42,8 +37,7 @@ mongoose.connect(DB_URL)
     console.log(`Error while connecting. Error: ${e}`);
 });
 
-
-app.listen(PORT,'0.0.0.0',function(){
+server.listen(PORT,'0.0.0.0',function(){
     console.log(`Connected at ${PORT}`);
 });
 
