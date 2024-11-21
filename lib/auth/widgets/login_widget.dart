@@ -53,7 +53,7 @@ class _LoginWidgetState extends State<LoginWidget> {
             CustomButton(
               onClick: ()async{
                 print("Facebook");
-                String? token = await getToken('auth_key');
+                String? token = await fetchData('auth_key');
                 print(token);
               },
               buttonText: "Login with Facebook",

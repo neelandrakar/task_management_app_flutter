@@ -44,11 +44,22 @@ Future<String> getDeviceId() async {
   return deviceId ?? 'Failed to get Device ID';
 }
 
-// String getBrandName(){
-//   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-//   String deviceName = "NA";
-//   deviceName = deviceInfo.
-//
-//
-//   return deviceName;
-// }
+Future<void> fetchDeviceInfo() async {
+  DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+
+  if (Platform.isAndroid) {
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+    device_id = androidInfo.id; // Unique ID for Android
+    model_name = androidInfo.model;
+    brand_name = androidInfo.brand;
+    os_type = Platform.operatingSystem;
+    os_version = androidInfo.version.release; // OS version for Android
+  } else if (Platform.isIOS) {
+    IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+    device_id = iosInfo.identifierForVendor!; // Unique ID for iOS
+    model_name = iosInfo.model;
+    brand_name = iosInfo.systemName;
+    os_type = iosInfo.systemVersion;
+    os_version = Platform.operatingSystemVersion;
+  }
+}

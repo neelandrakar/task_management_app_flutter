@@ -42,13 +42,13 @@ class AuthServices{
           onSuccess: () async {
             print('hello');
 
-            final Map<String, dynamic> jsonResponse = jsonDecode(res.body);
-            final Map<String, dynamic> jsonMsg = jsonResponse['msg'];
-            String jsonMsgString = jsonEncode(jsonMsg);
-            String jwt_token = jsonMsg['jwt_token'];
+            final Map<String, dynamic> _jsonResponse = jsonDecode(res.body);
+            final Map<String, dynamic> _jsonMsg = _jsonResponse['msg'];
+            String _jsonMsgString = jsonEncode(_jsonMsg);
+            String _jwt_token = _jsonMsg['jwt_token'];
 
-            await saveToken(jwt_token, 'auth_key');
-            Provider.of<UserProvider>(context, listen: false).setUser(jsonMsgString);
+            await storeData(_jsonMsgString, 'auth_key');
+            Provider.of<UserProvider>(context, listen: false).setUser(_jsonMsgString);
             onSuccess.call();
           }
       );
@@ -61,13 +61,21 @@ class AuthServices{
 
   Future<void> getUserData({
     required String jwtToken,
+    required BuildContext context,
+    required String? storedUser,
     required VoidCallback onSuccess
   })async{
 
     try{
 
+      Map data = {
+        "device_id": device_id,
+      };
+
+      String jsonBody = jsonEncode(data);
 
       http.Response res = await http.post(Uri.parse('$uri/v1/auth/checkToken'),
+          body: jsonBody,
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
             'x-auth-token': jwtToken
@@ -77,7 +85,10 @@ class AuthServices{
           response: res,
           onSuccess: () async {
             print('hello===> ${res.body}');
-
+            if(res.statusCode==200) {
+              Provider.of<UserProvider>(context, listen: false).setUser(
+                  storedUser!);
+            }
             onSuccess.call();
           }
       );

@@ -6,6 +6,7 @@ const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const {identifyInputType, fetchUsername} = require('../../controller/auth_controller');
 const { updateLoginHistory } = require('../../controller/loginHistoryController');
+const auth = require('../../middleware/auth');
 
 // SIGN UP
 authRouter.post("/v1/auth/sign-up", async (req, res) => {
@@ -193,16 +194,40 @@ authRouter.post("/v1/auth/sign-in", async (req, res) => {
 });
 
 //Check JWT Token
-authRouter.post('/v1/auth/checkToken', async (req,res)=>{
+authRouter.post('/v1/auth/checkToken', auth,async (req,res)=>{
 
   try{
       
-      const token = req.header('x-auth-token');
-    
+      const { device_id } = req.body;
+      const user_id = req.user;
+      console.log(device_id);
+      const check_login_history_sql = `SELECT * FROM task_management_schema.login_history_tbl WHERE user_id = "${user_id}"
+                                       AND is_logged_in = 1 AND device_id = "${device_id}";`;
+      
+      console.log(check_login_history_sql);                                       
+                                    
 
-      res.json({
-        success: true,
-        message: "Token validation has been initialized!!!"
+      con.query(check_login_history_sql, async (err_two, results_one) => {
+
+        if (err_two) {
+          return res.status(500).json({ 
+            success: false,
+            msg: err_one.message
+           });
+        } else {
+
+          if(results_one.length>0){
+            return res.status(200).json({
+              success: true,
+              message: "Proceed to login"
+            });
+          } else {
+            return res.status(401).json({
+              success: false,
+              message: "Session timeout!"
+            })
+          }
+        }
       });
 
   }catch(e){

@@ -9,7 +9,7 @@ AndroidOptions _getAndroidOptions() => const AndroidOptions(
 final androidStorage = FlutterSecureStorage(aOptions: _getAndroidOptions());
 
 // Save token
-Future<void> saveToken(String toBeSaved, String keyName) async {
+Future<void> storeData(String toBeSaved, String keyName) async {
   try {
     await androidStorage.write(key: keyName, value: toBeSaved);
     print('$keyName is saved successfully');
@@ -19,7 +19,7 @@ Future<void> saveToken(String toBeSaved, String keyName) async {
 }
 
 // Retrieve token
-Future<String?> getToken(String keyName) async {
+Future<String?> fetchData(String keyName) async {
   try {
     String? token = await androidStorage.read(key: keyName);
     if (token != null) {

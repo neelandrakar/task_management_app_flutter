@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
@@ -38,16 +40,25 @@ class _MyAppState extends State<MyApp> {
   late Future<void> _getUserData;
 
   getUserData() async {
-    jwtToken = await getToken('auth_key');
+    await fetchDeviceInfo();
+    String? storedUserData = await fetchData('auth_key');
+    jwtToken = jsonDecode(storedUserData!)['jwt_token'];
 
     if(jwtToken!=null) {
-      await authServices.getUserData(jwtToken: jwtToken!, onSuccess: () {
-        setState(() {
-          fullyLoaded = true;
-        });
+      await authServices.getUserData(
+          jwtToken: jwtToken!,
+          context: context,
+          storedUser: storedUserData,
+          onSuccess: () {
+            setState(() {
+              fullyLoaded = true;
+            });
       });
     } else {
       showSnackbar("JWT token is empty...");
+      setState(() {
+        fullyLoaded = true;
+      });
     }
 
   }
