@@ -29,7 +29,13 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Center(child: Text('HOME: ${userProvider.user.username}')),
-            CustomButton(onClick: (){Navigator.pushNamed(context, HomeTwoScreen.routeName);}, buttonText: "CLICK", borderRadius: 10)
+            CustomButton(
+                onClick: (){
+                  Navigator.pushNamed(context, HomeTwoScreen.routeName);
+                  },
+                buttonText: "CLICK",
+                borderRadius: 10
+            )
           ],
         ),
 

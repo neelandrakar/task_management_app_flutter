@@ -39,7 +39,6 @@ class AuthServices{
 
       HttpErroHandeling(
           response: res,
-          context: context,
           onSuccess: () async {
             print('hello');
 
@@ -56,12 +55,36 @@ class AuthServices{
 
     }catch(e){
       print("Error: $e");
-      showSnackbar(context, e.toString());
+      showSnackbar(e.toString());
     }
+  }
+
+  Future<void> getUserData({
+    required String jwtToken,
+    required VoidCallback onSuccess
+  })async{
+
+    try{
 
 
+      http.Response res = await http.post(Uri.parse('$uri/v1/auth/checkToken'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'x-auth-token': jwtToken
+          });
 
+      HttpErroHandeling(
+          response: res,
+          onSuccess: () async {
+            print('hello===> ${res.body}');
 
+            onSuccess.call();
+          }
+      );
 
+    }catch(e){
+      print("Error: $e");
+      showSnackbar(e.toString());
+    }
   }
 }

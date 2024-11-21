@@ -198,8 +198,12 @@ authRouter.post('/v1/auth/checkToken', async (req,res)=>{
   try{
       
       const token = req.header('x-auth-token');
+    
 
-      res.json(true);
+      res.json({
+        success: true,
+        message: "Token validation has been initialized!!!"
+      });
 
   }catch(e){
       res.status(500).json({ error: e.message }); 

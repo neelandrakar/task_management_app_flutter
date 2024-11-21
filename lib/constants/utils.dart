@@ -4,28 +4,28 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'MyColors.dart';
+import 'global_variables.dart';
 
-void showSnackbar(BuildContext context, String text){
-  ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-          backgroundColor: MyColors.fadedAppbarColor,
-          behavior: SnackBarBehavior.floating,
-          action: SnackBarAction(
-            label: 'Dismiss',
-            disabledTextColor: MyColors.boneWhite,
-            textColor: Colors.yellow,
-            onPressed: () {
-              //Do whatever you want
-            },
-          ),
-          content:
-          Text(
-            text,
-            style: const TextStyle(
-                fontFamily: 'Poppins',
-                color: MyColors.boneWhite
-            ),
-          ))
+void showSnackbar(String text) {
+  scaffoldMessengerKey.currentState?.showSnackBar(
+    SnackBar(
+      backgroundColor: MyColors.fadedAppbarColor,
+      behavior: SnackBarBehavior.floating,
+      action: SnackBarAction(
+        label: 'Dismiss',
+        disabledTextColor: MyColors.boneWhite,
+        textColor: Colors.yellow,
+        onPressed: () {},
+      ),
+      content: Text(
+        text,
+        style: const TextStyle(
+          fontFamily: 'Poppins',
+          color: MyColors.boneWhite,
+        ),
+      ),
+      duration: const Duration(seconds: 3),
+    ),
   );
 }
 

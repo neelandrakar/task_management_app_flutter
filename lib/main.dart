@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:task_management_app_flutter/auth/screens/login_screen.dart';
 import 'package:task_management_app_flutter/auth/screens/welcome_screen.dart';
+import 'package:task_management_app_flutter/auth/services/auth_services.dart';
 import 'package:task_management_app_flutter/constants/secured_storage.dart';
+import 'package:task_management_app_flutter/constants/utils.dart';
+import 'package:task_management_app_flutter/home/screens/home_screen.dart';
 import 'package:task_management_app_flutter/providers/user_privider.dart';
 import 'package:task_management_app_flutter/router.dart';
-
 import 'constants/MyColors.dart';
 import 'constants/assets_constants.dart';
+import 'constants/global_variables.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,44 +33,56 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
 
   bool fullyLoaded = false;
-  String? jwtToken = "";
+  String? jwtToken;
+  final AuthServices authServices = AuthServices();
+  late Future<void> _getUserData;
+
+  getUserData() async {
+    jwtToken = await getToken('auth_key');
+
+    if(jwtToken!=null) {
+      await authServices.getUserData(jwtToken: jwtToken!, onSuccess: () {
+        setState(() {
+          fullyLoaded = true;
+        });
+      });
+    } else {
+      showSnackbar("JWT token is empty...");
+    }
+
+  }
 
   @override
   void initState() {
     super.initState();
-    print("hi");
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      jwtToken = await getToken('auth_key');
-      print('token ===> $jwtToken');
-    });
-
-    super.initState();
+    _getUserData = getUserData();
   }
 
   @override
   Widget build(BuildContext context) {
-
     return FutureBuilder(
-      future: Future.delayed(Duration(seconds: 1)), // replace this with your async operation
+      future: _getUserData, // replace this with your async operation
       builder: (context, snapshot) {
         if (!fullyLoaded) {
           return Container(
-            color: MyColors.appBarColor,
+            color: MyColors.boneWhite,
             child: Center(
-              child: Image.asset(AssetsConstants.facebook_logo),
+              child: LoadingAnimationWidget.inkDrop(color: MyColors.appBarColor, size: 40),
             ),
           ); // or any other loading indicator
         } else {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            title: 'Task Management App',
+            title: 'Retail CRM Flutter',
             onGenerateRoute: (settings) => generateRoute(settings),
             theme: ThemeData(
               // colorScheme: ColorScheme.light(),
               primaryColor: MyColors.mainYellowColor,
               useMaterial3: true,
             ),
-            home: WelcomeScreen(),
+            home: Provider.of<UserProvider>(context).user.jwt_token.isNotEmpty
+                ? HomeScreen()
+                : WelcomeScreen(),
           );
         }
       },

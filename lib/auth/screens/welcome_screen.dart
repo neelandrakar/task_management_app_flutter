@@ -21,14 +21,17 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   @override
   void initState() {
+    print("hi");
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await _fetchDeviceId();
+    });
+
+
     super.initState();
-    // Optionally fetch device ID here
-    _fetchDeviceId();
   }
 
   Future<void> _fetchDeviceId() async {
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-    String? deviceId;
 
     if (Platform.isAndroid) {
       AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
@@ -47,8 +50,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     }
 
     setState(() {
-      _deviceId = deviceId ?? 'Failed to get Device ID'; // Update state
-      print("My device: ${_deviceId}");
+      print("My device: ${device_id}");
     });
   }
 
@@ -94,7 +96,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 onClick: () async {
                   // You can use _deviceId here if needed
                   print("Device ID: $_deviceId"); // Example of using device ID
-                  _fetchDeviceId();
+                  // _fetchDeviceId();
                   Navigator.pushNamed(context, LoginSceen.routeName);
                 },
                 buttonText: "Let's Start",
@@ -106,7 +108,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 showSuffixIcon: true,
               ),
               SizedBox(height: 20),
-              Text("Device ID: $_deviceId"), // Display device ID if needed
+              Text("Device ID: $device_id"), // Display device ID if needed
             ],
           ),
         ),
