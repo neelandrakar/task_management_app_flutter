@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/user_privider.dart';
 import 'MyColors.dart';
 import 'global_variables.dart';
 
@@ -62,4 +64,11 @@ Future<void> fetchDeviceInfo() async {
     os_type = iosInfo.systemVersion;
     os_version = Platform.operatingSystemVersion;
   }
+}
+
+int getUserId(BuildContext context){
+  UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
+  int? user_id = userProvider.user.user_id;
+
+  return user_id;
 }

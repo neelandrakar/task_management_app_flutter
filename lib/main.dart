@@ -11,6 +11,7 @@ import 'package:task_management_app_flutter/constants/utils.dart';
 import 'package:task_management_app_flutter/home/screens/home_screen.dart';
 import 'package:task_management_app_flutter/providers/user_privider.dart';
 import 'package:task_management_app_flutter/router.dart';
+import 'package:task_management_app_flutter/socket/services/socket_service.dart';
 import 'constants/MyColors.dart';
 import 'constants/assets_constants.dart';
 import 'constants/global_variables.dart';
@@ -20,6 +21,7 @@ void main() async {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (context) => UserProvider()),
+      ChangeNotifierProvider(create: (_) => SocketService()),
     ],
     child: const MyApp(),
   ));
@@ -39,12 +41,14 @@ class _MyAppState extends State<MyApp> {
   final AuthServices authServices = AuthServices();
   late Future<void> _getUserData;
 
-  getUserData() async {
+  getUserData(VoidCallback onSuccess) async {
     await fetchDeviceInfo();
     String? storedUserData = await fetchData('auth_key');
-    jwtToken = jsonDecode(storedUserData!)['jwt_token'];
 
-    if(jwtToken!=null) {
+    if(storedUserData!=null){
+      jwtToken = jsonDecode(storedUserData)['jwt_token'];
+      print('jwt: ${jwtToken}');
+
       await authServices.getUserData(
           jwtToken: jwtToken!,
           context: context,
@@ -60,13 +64,15 @@ class _MyAppState extends State<MyApp> {
         fullyLoaded = true;
       });
     }
-
+    onSuccess.call();
   }
 
   @override
   void initState() {
     super.initState();
-    _getUserData = getUserData();
+    _getUserData = getUserData(
+        () {}
+    );
   }
 
   @override
@@ -83,6 +89,7 @@ class _MyAppState extends State<MyApp> {
           ); // or any other loading indicator
         } else {
           return MaterialApp(
+            navigatorKey: duplicateLoginKey,
             debugShowCheckedModeBanner: false,
             title: 'Retail CRM Flutter',
             onGenerateRoute: (settings) => generateRoute(settings),

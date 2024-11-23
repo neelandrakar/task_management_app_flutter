@@ -177,7 +177,7 @@ authRouter.post("/v1/auth/sign-in", async (req, res) => {
           });
       }
       } else {
-        return res.status(401).json({
+        return res.status(401).json({  
           success: false,
           msg: `Please enter a valid ${inputType}`
         });
@@ -203,9 +203,7 @@ authRouter.post('/v1/auth/checkToken', auth,async (req,res)=>{
       console.log(device_id);
       const check_login_history_sql = `SELECT * FROM task_management_schema.login_history_tbl WHERE user_id = "${user_id}"
                                        AND is_logged_in = 1 AND device_id = "${device_id}";`;
-      
-      console.log(check_login_history_sql);                                       
-                                    
+                                          
 
       con.query(check_login_history_sql, async (err_two, results_one) => {
 

@@ -9,3 +9,5 @@ String brand_name = "NA";
 String os_type = "NA"; //0==> Android, 1==> iOS
 String os_version = "NA";
 final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
+final GlobalKey<NavigatorState> duplicateLoginKey = GlobalKey<NavigatorState>();
+

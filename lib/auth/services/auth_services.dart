@@ -80,7 +80,7 @@ class AuthServices{
             'Content-Type': 'application/json; charset=UTF-8',
             'x-auth-token': jwtToken
           });
-
+      print(device_id);
       HttpErroHandeling(
           response: res,
           onSuccess: () async {
