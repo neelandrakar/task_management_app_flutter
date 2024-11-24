@@ -40,7 +40,9 @@ class SocketService with ChangeNotifier {
               content: Text(data['message']),
               actions: [
                 TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
+                  onPressed: () async {
+                    await logOut(context);
+                  },
                   child: Text('OK'),
                 ),
               ],

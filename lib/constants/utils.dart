@@ -4,6 +4,8 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:task_management_app_flutter/auth/screens/login_screen.dart';
+import 'package:task_management_app_flutter/constants/secured_storage.dart';
 import '../providers/user_privider.dart';
 import 'MyColors.dart';
 import 'global_variables.dart';
@@ -71,4 +73,8 @@ int getUserId(BuildContext context){
   int? user_id = userProvider.user.user_id;
 
   return user_id;
+}
+logOut(BuildContext context)async{
+  await deleteToken('auth_key');
+  Navigator.pushNamed(context, LoginSceen.routeName);
 }

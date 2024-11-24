@@ -20,7 +20,7 @@ const updateLoginHistory = async (io, user_id, deviceInfo) => {
           io.emit('device_logged_in', {
             user_id,
             message: 'You have been logged in from a different device.',
-            deviceInfo: {
+            deviceInfo: { 
               brand,
               model,
               device_id,
