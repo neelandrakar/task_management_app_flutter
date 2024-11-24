@@ -33,6 +33,8 @@ class SocketService with ChangeNotifier {
         _socket!.on('device_logged_in', (data) {
           print('Device logged in event received: $data');
           // Handle the event data (e.g., show a dialog or update the UI)
+          if(!duplicateLoginDetected){
+          duplicateLoginDetected = true;
           showDialog(
             context: context,
             builder: (context) => AlertDialog(
@@ -41,6 +43,7 @@ class SocketService with ChangeNotifier {
               actions: [
                 TextButton(
                   onPressed: () async {
+                    duplicateLoginDetected = false;
                     await logOut(context);
                   },
                   child: Text('OK'),
@@ -48,7 +51,7 @@ class SocketService with ChangeNotifier {
               ],
             ),
           );
-        });
+        }});
     }
   }
 
