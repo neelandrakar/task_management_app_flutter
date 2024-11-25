@@ -53,8 +53,7 @@ const updateLoginHistory = async (io, user_id, deviceInfo) => {
 
       const insert_log_data = `
         INSERT INTO login_history_tbl (user_id, brand, model, device_id, os_type, os_version, is_logged_in)
-        VALUES ("${user_id}", "${brand}", "${model}", "${device_id}", "${os_type}", "${os_version}", '1');
-      `;
+        VALUES ("${user_id}", "${brand}", "${model}", "${device_id}", "${os_type}", "${os_version}", '1');W`;
       con.query(insert_log_data, (ins_log_err) => {
         if (ins_log_err) {
           return reject(new Error(ins_log_err.message));

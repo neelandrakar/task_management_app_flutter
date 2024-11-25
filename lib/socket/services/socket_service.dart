@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:task_management_app_flutter/constants/secured_storage.dart';
 import 'package:task_management_app_flutter/constants/utils.dart';
 
 import '../../constants/global_variables.dart';
@@ -30,10 +31,11 @@ class SocketService with ChangeNotifier {
 
   void getDuplicateLoginData(BuildContext context){
     if(_socket !=null){
-        _socket!.on('device_logged_in', (data) {
+        _socket!.on('device_logged_in', (data) async {
           print('Device logged in event received: $data');
           // Handle the event data (e.g., show a dialog or update the UI)
-          if(!duplicateLoginDetected){
+          String? auth_key = await fetchData('auth_key');
+          if (!duplicateLoginDetected && (auth_key?.isNotEmpty ?? false)) {
           duplicateLoginDetected = true;
           showDialog(
             context: context,
