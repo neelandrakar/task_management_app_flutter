@@ -18,7 +18,7 @@ void HttpErroHandeling({
     showSnackbar('Redirection: ${response.statusCode}');
   } else if (response.statusCode >= 400 && response.statusCode < 500) {
     // Handle client error responses
-    showSnackbar(jsonDecode(response.body)['msg']);
+    showSnackbar(jsonDecode(response.body)['error']);
   } else if (response.statusCode >= 500) {
     // Handle server error responses
     showSnackbar(jsonDecode(response.body)['error']);

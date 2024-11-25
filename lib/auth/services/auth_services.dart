@@ -63,7 +63,8 @@ class AuthServices{
     required String jwtToken,
     required BuildContext context,
     required String? storedUser,
-    required VoidCallback onSuccess
+    required VoidCallback onSuccess,
+    required VoidCallback onSessionTimeout,
   })async{
 
     try{
@@ -73,6 +74,7 @@ class AuthServices{
       };
 
       String jsonBody = jsonEncode(data);
+      // print(jsonBody);
 
       http.Response res = await http.post(Uri.parse('$uri/v1/auth/checkToken'),
           body: jsonBody,
@@ -81,17 +83,24 @@ class AuthServices{
             'x-auth-token': jwtToken
           });
       print(device_id);
-      HttpErroHandeling(
-          response: res,
-          onSuccess: () async {
-            print('hello===> ${res.body}');
-            if(res.statusCode==200) {
-              Provider.of<UserProvider>(context, listen: false).setUser(
-                  storedUser!);
+      if(res.statusCode==401){
+        showSnackbar("NEEL");
+        print(jsonDecode(res.body)['error']);
+        onSessionTimeout.call();
+
+      } else {
+        HttpErroHandeling(
+            response: res,
+            onSuccess: () async {
+              print('hello===> ${res.body}');
+              if (res.statusCode == 200) {
+                Provider.of<UserProvider>(context, listen: false).setUser(
+                    storedUser!);
+              }
+              onSuccess.call();
             }
-            onSuccess.call();
-          }
-      );
+        );
+      }
 
     }catch(e){
       print("Error: $e");

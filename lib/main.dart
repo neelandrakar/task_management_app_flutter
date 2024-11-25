@@ -57,7 +57,13 @@ class _MyAppState extends State<MyApp> {
             setState(() {
               fullyLoaded = true;
             });
-      });
+          },
+          onSessionTimeout: (){
+            setState(() {
+              fullyLoaded = true;
+            });
+          }
+      );
     } else {
       showSnackbar("JWT token is empty...");
       setState(() {
@@ -71,7 +77,9 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     _getUserData = getUserData(
-        () {}
+        () {
+          showSnackbar("MESSI");
+        }
     );
   }
 
@@ -89,9 +97,10 @@ class _MyAppState extends State<MyApp> {
           ); // or any other loading indicator
         } else {
           return MaterialApp(
-            navigatorKey: duplicateLoginKey,
+            // navigatorKey: duplicateLoginKey,
             debugShowCheckedModeBanner: false,
-            title: 'Retail CRM Flutter',
+            scaffoldMessengerKey: scaffoldMessengerKey,
+            title: 'Task Management App',
             onGenerateRoute: (settings) => generateRoute(settings),
             theme: ThemeData(
               // colorScheme: ColorScheme.light(),

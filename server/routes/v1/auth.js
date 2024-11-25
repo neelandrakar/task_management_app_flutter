@@ -222,7 +222,7 @@ authRouter.post('/v1/auth/checkToken', auth,async (req,res)=>{
           } else {
             return res.status(401).json({
               success: false,
-              message: "Session timeout!"
+              error: "Session timeout!"
             })
           }
         }

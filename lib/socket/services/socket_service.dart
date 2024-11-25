@@ -35,6 +35,7 @@ class SocketService with ChangeNotifier {
           print('Device logged in event received: $data');
           // Handle the event data (e.g., show a dialog or update the UI)
           String? auth_key = await fetchData('auth_key');
+          print("auth_key===> ${auth_key}");
           if (!duplicateLoginDetected && (auth_key?.isNotEmpty ?? false)) {
           duplicateLoginDetected = true;
           showDialog(
