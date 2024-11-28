@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:task_management_app_flutter/auth/screens/login_screen.dart';
 import 'package:task_management_app_flutter/home/screens/home_screen.dart';
 import 'package:task_management_app_flutter/home/screens/home_two.dart';
+import 'package:task_management_app_flutter/profile/screens/profile_screen.dart';
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
 
@@ -23,6 +24,12 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
         settings: routeSettings,
         builder: (_) => const HomeTwoScreen(),
+      );
+
+    case ProfileScreen.routeName: // Assuming you have a HomeScreen
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (_) => const ProfileScreen(),
       );
 
     default:
