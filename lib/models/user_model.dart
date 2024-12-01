@@ -7,6 +7,7 @@ class UserModel {
   final String? name;
   final int? mobno;
   final String? email_id;
+  final String? profile_pic;
   final String password;
   final String jwt_token;
   final DateTime creation_date;
@@ -16,6 +17,7 @@ class UserModel {
     required this.name,
     required this.mobno,
     required this.email_id,
+    required this.profile_pic,
     required this.password,
     required this.jwt_token,
     required this.creation_date,
@@ -28,6 +30,7 @@ class UserModel {
       'name': name,
       'mobno': mobno,
       'email_id': email_id,
+      'profile_pic': profile_pic,
       'hashedPassword': password,
       'jwt_token': jwt_token,
       'creation_date': creation_date,
@@ -39,8 +42,9 @@ class UserModel {
       user_id: map['user_id'] as int,
       username: map['username'] as String,
       name: map['name'] as String? ?? '',
-      mobno: map['mobno'] as int? ?? 0, // Default value if null
-      email_id: map['email_id'] as String? ?? '', // Default value if null
+      mobno: map['mobno'] as int? ?? 0,
+      profile_pic: map['profile_pic'] as String? ?? '',
+      email_id: map['email_id'] as String? ?? '',
       password: map['hashedPassword'] as String,
       jwt_token: map['jwt_token'] as String,
       creation_date: DateTime.parse(map['creation_date']),

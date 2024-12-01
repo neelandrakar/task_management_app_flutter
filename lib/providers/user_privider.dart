@@ -9,6 +9,7 @@ class UserProvider extends ChangeNotifier{
       name: '',
       mobno: 0,
       email_id: '',
+      profile_pic: '',
       password: '',
       jwt_token: '',
       creation_date: DateTime.now()
