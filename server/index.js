@@ -9,8 +9,10 @@ const app = express();
 const authRouter = require('./routes/v1/auth');
 const voteRouter = require('./routes/v1/votes');
 const profileRouter = require('./routes/v1/profile');
+const authRouter = require('./routes/v1/home');
 const http = require('http');
 const { initSocket } = require('./socket/socket_manager');
+const homeRouter = require("./routes/v1/home");
 var server = http.createServer(app);
 const io = initSocket(server);
 const ipAddress = '0.0.0.0'
@@ -27,7 +29,8 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(authRouter);
 app.use(voteRouter);
-app.use(profileRouter)
+app.use(profileRouter);
+app.use(homeRouter);
 
 mongoose.connect(DB_URL)
 .then(()=>{

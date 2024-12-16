@@ -226,7 +226,7 @@ authRouter.post('/v1/auth/checkToken', auth,async (req,res)=>{
             })
           }
         }
-      });
+      });z
 
   }catch(e){
       res.status(500).json({ error: e.message }); 
