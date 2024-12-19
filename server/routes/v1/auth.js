@@ -208,11 +208,13 @@ authRouter.post('/v1/auth/checkToken', auth,async (req,res)=>{
       con.query(check_login_history_sql, async (err_two, results_one) => {
 
         if (err_two) {
+          // console.log("ZZZ")
           return res.status(500).json({ 
             success: false,
             msg: err_one.message
            });
         } else {
+          // console.log("XXX")
 
           if(results_one.length>0){
             return res.status(200).json({
@@ -226,7 +228,7 @@ authRouter.post('/v1/auth/checkToken', auth,async (req,res)=>{
             })
           }
         }
-      });z
+      });
 
   }catch(e){
       res.status(500).json({ error: e.message }); 

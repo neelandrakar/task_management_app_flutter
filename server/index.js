@@ -9,7 +9,6 @@ const app = express();
 const authRouter = require('./routes/v1/auth');
 const voteRouter = require('./routes/v1/votes');
 const profileRouter = require('./routes/v1/profile');
-const authRouter = require('./routes/v1/home');
 const http = require('http');
 const { initSocket } = require('./socket/socket_manager');
 const homeRouter = require("./routes/v1/home");

@@ -1,7 +1,9 @@
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:task_management_app_flutter/constants/MyColors.dart';
 import 'package:task_management_app_flutter/constants/custom_button.dart';
+import 'package:task_management_app_flutter/constants/my_fonts.dart';
 import 'package:task_management_app_flutter/constants/utils.dart';
 import 'package:task_management_app_flutter/home/screens/home_two.dart';
 import 'package:task_management_app_flutter/socket/services/socket_service.dart';
@@ -18,6 +20,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+  String titleName = "NA";
+
   @override
   void initState() {
     super.initState();
@@ -31,11 +36,25 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     UserProvider userProvider = Provider.of<UserProvider>(context);
+    print("NAME: ${userProvider.user.name}");
+    titleName = (userProvider.user.name != "NA" ? userProvider.user.name : userProvider.user.username)!;
+
     return WillPopScope(
       onWillPop: () async {
         return false; // Prevent back navigation
       },
       child: Scaffold(
+        backgroundColor: MyColors.boneWhite,
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text(
+              titleName,
+              style: TextStyle(
+                fontFamily: MyFonts.poppins,
+                fontSize: 17
+              ),
+          ) ,
+        ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
