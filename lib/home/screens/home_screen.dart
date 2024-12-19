@@ -22,6 +22,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
 
   String titleName = "NA";
+  String profile_pic = "";
 
   @override
   void initState() {
@@ -33,11 +34,21 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  getProfilePic(String profile_pic_url){
+    if(profile_pic_url==""){
+      print("Not available");
+      return Icon(Icons.person);
+    } else{
+      return Image.network(profile_pic_url);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     UserProvider userProvider = Provider.of<UserProvider>(context);
     print("NAME: ${userProvider.user.name}");
     titleName = (userProvider.user.name != "NA" ? userProvider.user.name : userProvider.user.username)!;
+
 
     return WillPopScope(
       onWillPop: () async {
@@ -46,13 +57,28 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         backgroundColor: MyColors.boneWhite,
         appBar: AppBar(
-          centerTitle: true,
-          title: Text(
-              titleName,
-              style: TextStyle(
-                fontFamily: MyFonts.poppins,
-                fontSize: 17
+
+          leading: CircleAvatar(
+            child: getProfilePic(userProvider.user.profile_pic!),
+          ),
+          centerTitle: false,
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("Hello!",
+                style: TextStyle(
+                  fontSize: 12,
+                  fontFamily: MyFonts.poppins
+                ),
               ),
+              Text(
+                  titleName,
+                  style: TextStyle(
+                    fontFamily: MyFonts.poppins,
+                    fontSize: 17
+                  ),
+              ),
+            ],
           ) ,
         ),
         body: Column(
