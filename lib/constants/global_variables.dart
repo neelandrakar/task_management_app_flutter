@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../providers/user_privider.dart';
+import '../providers/user_provider.dart';
 
 double horizontal_padding = 15;
 String uri = 'http://192.168.113.6:3000';

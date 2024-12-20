@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:task_management_app_flutter/constants/custom_button.dart';
 
 import '../../constants/global_variables.dart';
-import '../../providers/user_privider.dart';
+import '../../providers/user_provider.dart';
 
 class HomeTwoScreen extends StatefulWidget {
   static const String routeName = "/home-two";

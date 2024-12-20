@@ -98,6 +98,7 @@ authRouter.post("/v1/auth/sign-in", async (req, res) => {
     const inputType = identifyInputType(input);
     //console.log(`inputtype: ${inputType}`)
     const getUsername = await fetchUsername(7);
+    const noProfilePic = "https://res.cloudinary.com/dhfiapa0x/image/upload/v1734686365/igutpqb1euqhjcfnhmjv.jpg";
     //console.log(`getUsername: ${getUsername}`);
 
     if(inputType=='email'){
@@ -124,6 +125,7 @@ authRouter.post("/v1/auth/sign-in", async (req, res) => {
         const name = results_one[0].name ?? 'NA';
         const mobno = parseInt(results_one[0].mobno) ?? 0;
         const username = results_one[0].username;
+        const profile_pic = results_one[0].profile_pic ?? "";
         const creation_date = results_one[0].creation_date;
         const isMatch = await bcryptjs.compare(password, hashedPassword);
         //console.log(`Password status: ${isMatch}`);
@@ -159,6 +161,7 @@ authRouter.post("/v1/auth/sign-in", async (req, res) => {
             username: username,
             name: name,
             mobno: mobno,
+            profile_pic: profile_pic,
             jwt_token: jwt_token,
             hashedPassword: hashedPassword,
             creation_date: creation_date

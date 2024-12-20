@@ -7,7 +7,7 @@ import 'package:task_management_app_flutter/constants/global_variables.dart';
 import 'package:task_management_app_flutter/constants/http_error_handeling.dart';
 import 'package:task_management_app_flutter/constants/secured_storage.dart';
 import 'package:task_management_app_flutter/constants/utils.dart';
-import 'package:task_management_app_flutter/providers/user_privider.dart';
+import 'package:task_management_app_flutter/providers/user_provider.dart';
 
 class AuthServices{
 

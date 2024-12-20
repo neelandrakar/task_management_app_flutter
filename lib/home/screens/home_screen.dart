@@ -1,15 +1,13 @@
-import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:task_management_app_flutter/constants/MyColors.dart';
+import 'package:task_management_app_flutter/constants/assets_constants.dart';
 import 'package:task_management_app_flutter/constants/custom_button.dart';
 import 'package:task_management_app_flutter/constants/my_fonts.dart';
 import 'package:task_management_app_flutter/constants/utils.dart';
 import 'package:task_management_app_flutter/home/screens/home_two.dart';
 import 'package:task_management_app_flutter/socket/services/socket_service.dart';
-
-import '../../constants/global_variables.dart';
-import '../../providers/user_privider.dart';
+import '../../providers/user_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = "/home-screen";
@@ -34,12 +32,13 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  getProfilePic(String profile_pic_url){
-    if(profile_pic_url==""){
+  ImageProvider<Object> getProfilePic(String profilePicUrl) {
+    print("profile pic: ${profilePicUrl}");
+    if (profilePicUrl.isEmpty) {
       print("Not available");
-      return Icon(Icons.person);
-    } else{
-      return Image.network(profile_pic_url);
+      return const AssetImage(AssetsConstants.no_profile_pic); // Use a default image asset
+    } else {
+      return NetworkImage(profilePicUrl); // Return a NetworkImage for the URL
     }
   }
 
@@ -59,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar: AppBar(
 
           leading: CircleAvatar(
-            child: getProfilePic(userProvider.user.profile_pic!),
+            backgroundImage: getProfilePic(userProvider.user.profile_pic!), // Use backgroundImage instead of foregroundImage
           ),
           centerTitle: false,
           title: Column(

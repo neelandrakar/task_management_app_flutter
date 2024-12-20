@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:task_management_app_flutter/auth/screens/login_screen.dart';
 import 'package:task_management_app_flutter/constants/secured_storage.dart';
-import '../providers/user_privider.dart';
+import '../providers/user_provider.dart';
 import 'MyColors.dart';
 import 'global_variables.dart';
 
