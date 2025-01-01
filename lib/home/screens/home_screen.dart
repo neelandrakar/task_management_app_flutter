@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:record/record.dart';
 import 'package:task_management_app_flutter/constants/MyColors.dart';
 import 'package:task_management_app_flutter/constants/assets_constants.dart';
 import 'package:task_management_app_flutter/constants/custom_button.dart';
@@ -21,6 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   String titleName = "NA";
   String profile_pic = "";
+  final record = AudioRecorder();
 
   @override
   void initState() {
@@ -85,8 +87,22 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Center(child: Text('HOME: ${userProvider.user.username}')),
             CustomButton(
-              onClick: () {
-                Navigator.pushNamed(context, HomeTwoScreen.routeName);
+              onClick: () async {
+                // Navigator.pushNamed(context, HomeTwoScreen.routeName);
+                // Check and request permission if needed
+                if (await record.hasPermission()) {
+                // Start recording to file
+                await record.start(const RecordConfig(), path: 'aFullPath/myFile.m4a');
+                // ... or to stream
+                final stream = await record.startStream(const RecordConfig(encoder: AudioEncoder.pcm16bits));
+                }
+
+                // Stop recording...
+                final path = await record.stop();
+                // ... or cancel it (and implicitly remove file/blob).
+                await record.cancel();
+
+                record.dispose(); // As always, don't forget this one.
               },
               buttonText: "CLICK",
               borderRadius: 10,
