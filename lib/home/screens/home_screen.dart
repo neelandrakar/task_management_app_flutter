@@ -24,6 +24,22 @@ class _HomeScreenState extends State<HomeScreen> {
   String profile_pic = "";
   final record = AudioRecorder();
 
+  void recordAudio()async {
+    if (await record.hasPermission()) {
+      // Start recording to file
+      await record.start(const RecordConfig(), path: 'aFullPath/myFile.m4a');
+      // ... or to stream
+      final stream = await record.startStream(const RecordConfig(encoder: AudioEncoder.pcm16bits));
+    }
+
+    // Stop recording...
+    final path = await record.stop();
+    // ... or cancel it (and implicitly remove file/blob).
+    await record.cancel();
+
+    record.dispose(); // As always, don't forget this one.
+  }
+
   @override
   void initState() {
     super.initState();
@@ -82,6 +98,10 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ) ,
         ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            recordAudio();
+          }),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -90,19 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
               onClick: () async {
                 // Navigator.pushNamed(context, HomeTwoScreen.routeName);
                 // Check and request permission if needed
-                if (await record.hasPermission()) {
-                // Start recording to file
-                await record.start(const RecordConfig(), path: 'aFullPath/myFile.m4a');
-                // ... or to stream
-                final stream = await record.startStream(const RecordConfig(encoder: AudioEncoder.pcm16bits));
-                }
 
-                // Stop recording...
-                final path = await record.stop();
-                // ... or cancel it (and implicitly remove file/blob).
-                await record.cancel();
-
-                record.dispose(); // As always, don't forget this one.
               },
               buttonText: "CLICK",
               borderRadius: 10,
