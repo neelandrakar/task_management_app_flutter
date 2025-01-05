@@ -19,34 +19,58 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   String titleName = "NA";
   String profile_pic = "";
   final record = AudioRecorder();
+  bool isRecording = false; // Track recording state
 
-  void recordAudio()async {
-    if (await record.hasPermission()) {
-      // Start recording to file
-      await record.start(const RecordConfig(), path: 'aFullPath/myFile.m4a');
-      // ... or to stream
-      final stream = await record.startStream(const RecordConfig(encoder: AudioEncoder.pcm16bits));
+  void recordAudio() async {
+    try {
+      if (isRecording) {
+        // Stop recording
+        await record.stop();
+        setState(() {
+          isRecording = false; // Update state
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Recording stopped')),
+        );
+      } else {
+        // Start recording
+        if (await record.hasPermission()) {
+          await record.start(const RecordConfig(), path: 'aFullPath/myFile.m4a');
+          setState(() {
+            isRecording = true; // Update state
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Recording started')),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Permission denied')),
+          );
+        }
+      }
+    } catch (e) {
+      print('Error recording audio: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error recording audio: $e')),
+      );
     }
+  }
 
-    // Stop recording...
-    final path = await record.stop();
-    // ... or cancel it (and implicitly remove file/blob).
-    await record.cancel();
-
-    record.dispose(); // As always, don't forget this one.
+  @override
+  void dispose() {
+    record.dispose();
+    super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
-    // Use WidgetsBinding to ensure context is available
     WidgetsBinding.instance.addPostFrameCallback((_) {
       SocketService socketService = Provider.of<SocketService>(context, listen: false);
-      socketService.connectToRoom(getUserId(context), context); // Ensure getUser Id is defined
+      socketService.connectToRoom(getUserId(context), context);
     });
   }
 
@@ -54,9 +78,9 @@ class _HomeScreenState extends State<HomeScreen> {
     print("profile pic: ${profilePicUrl}");
     if (profilePicUrl.isEmpty) {
       print("Not available");
-      return const AssetImage(AssetsConstants.no_profile_pic); // Use a default image asset
+      return const AssetImage(AssetsConstants.no_profile_pic);
     } else {
-      return NetworkImage(profilePicUrl); // Return a NetworkImage for the URL
+      return NetworkImage(profilePicUrl);
     }
   }
 
@@ -66,7 +90,6 @@ class _HomeScreenState extends State<HomeScreen> {
     print("NAME: ${userProvider.user.name}");
     titleName = (userProvider.user.name != "NA" ? userProvider.user.name : userProvider.user.username)!;
 
-
     return WillPopScope(
       onWillPop: () async {
         return false; // Prevent back navigation
@@ -74,9 +97,8 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         backgroundColor: MyColors.boneWhite,
         appBar: AppBar(
-
           leading: CircleAvatar(
-            backgroundImage: getProfilePic(userProvider.user.profile_pic!), // Use backgroundImage instead of foregroundImage
+            backgroundImage: getProfilePic(userProvider.user.profile_pic!),
           ),
           centerTitle: false,
           title: Column(
@@ -84,24 +106,24 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               Text("Hello!",
                 style: TextStyle(
-                  fontSize: 12,
-                  fontFamily: MyFonts.poppins
+                    fontSize: 12,
+                    fontFamily: MyFonts.poppins
                 ),
               ),
               Text(
-                  titleName,
-                  style: TextStyle(
+                titleName,
+                style: TextStyle(
                     fontFamily: MyFonts.poppins,
                     fontSize: 17
-                  ),
+                ),
               ),
             ],
-          ) ,
+          ),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            recordAudio();
-          }),
+          onPressed: recordAudio,
+          child: Icon(isRecording ? Icons.stop : Icons.mic), // Change icon based on recording state
+        ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -109,8 +131,6 @@ class _HomeScreenState extends State<HomeScreen> {
             CustomButton(
               onClick: () async {
                 // Navigator.pushNamed(context, HomeTwoScreen.routeName);
-                // Check and request permission if needed
-
               },
               buttonText: "CLICK",
               borderRadius: 10,
