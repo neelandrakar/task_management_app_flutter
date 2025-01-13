@@ -1,7 +1,7 @@
 const express = require("express");
 const homeRouter = express.Router();
 const auth = require('../../middleware/auth');
-const { getGreetingBasedOnTime } = require('../../controller/homeController');
+const { getGreetingBasedOnTime, getCurrentWeekDays } = require('../../controller/homeController');
 
 homeRouter.post('/v1/home/get-dashboard', auth, async (req, res)=>{
     try{
@@ -10,12 +10,20 @@ homeRouter.post('/v1/home/get-dashboard', auth, async (req, res)=>{
 
         const currentTime = new Date();
         let greetingText = "NA";
+        let weekRange = "NA";
 
         greetingText = getGreetingBasedOnTime(currentTime);
+        home_res = [];
+        weekRange = getCurrentWeekDays();
+
+        home_res = {
+            "greeting_text": greetingText,
+            "week_range": weekRange
+        }
 
         res.status(200).json({
             success: true,
-            msg: greetingText
+            msg: home_res
         })
 
     }catch (e) {
