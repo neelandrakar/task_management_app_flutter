@@ -1,6 +1,10 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
-import 'package:record/record.dart';
+import 'package:record/record.dart'; // Ensure this package is added in pubspec.yaml
+import 'package:task_management_app_flutter/chatbot/services/chatbot_services.dart';
 import 'package:task_management_app_flutter/constants/MyColors.dart';
 import 'package:task_management_app_flutter/constants/assets_constants.dart';
 import 'package:task_management_app_flutter/constants/custom_button.dart';
@@ -8,7 +12,11 @@ import 'package:task_management_app_flutter/constants/my_fonts.dart';
 import 'package:task_management_app_flutter/constants/utils.dart';
 import 'package:task_management_app_flutter/home/screens/home_two.dart';
 import 'package:task_management_app_flutter/socket/services/socket_service.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
 import '../../providers/user_provider.dart';
+import 'package:path/path.dart' as p;
+
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = "/home-screen";
@@ -20,48 +28,19 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String titleName = "NA";
-  String profile_pic = "";
-  final record = AudioRecorder();
-  bool isRecording = false; // Track recording state
+  String profilePic = "";
+  final AudioRecorder audioRecorder = AudioRecorder();
+  final AudioPlayer audioPlayer = AudioPlayer();
+  String? recordingPath;
+  String? audioFileMp3;
+  bool isRecording = false, isPlaying = false;
+  final ChatbotServices chatbotServices = ChatbotServices();
 
-  void recordAudio() async {
-    try {
-      if (isRecording) {
-        // Stop recording
-        await record.stop();
-        setState(() {
-          isRecording = false; // Update state
-        });
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Recording stopped')),
-        );
-      } else {
-        // Start recording
-        if (await record.hasPermission()) {
-          await record.start(const RecordConfig(), path: 'aFullPath/myFile.m4a');
-          setState(() {
-            isRecording = true; // Update state
-          });
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Recording started')),
-          );
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Permission denied')),
-          );
-        }
-      }
-    } catch (e) {
-      print('Error recording audio: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error recording audio: $e')),
-      );
-    }
-  }
 
+  /// Dispose the recorder to free resources
   @override
   void dispose() {
-    record.dispose();
+    audioRecorder.dispose();
     super.dispose();
   }
 
@@ -69,13 +48,28 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      SocketService socketService = Provider.of<SocketService>(context, listen: false);
+      SocketService socketService =
+      Provider.of<SocketService>(context, listen: false);
       socketService.connectToRoom(getUserId(context), context);
     });
   }
 
+  Future<Uint8List> getWavFileBytes(String filePath)async{
+    final file = File(filePath);
+    return await file.readAsBytes();
+  }
+
+  Future<void> sendWavFileToApi(String filePath) async {
+    final Uint8List fileBytes = await getWavFileBytes(filePath);
+    chatbotServices.initiateChatbot(fileBytes: fileBytes, fileName: filePath);
+  }
+
+
+
+
+  /// Fetch the correct profile picture (default or network)
   ImageProvider<Object> getProfilePic(String profilePicUrl) {
-    print("profile pic: ${profilePicUrl}");
+    print("Profile pic: $profilePicUrl");
     if (profilePicUrl.isEmpty) {
       print("Not available");
       return const AssetImage(AssetsConstants.no_profile_pic);
@@ -88,12 +82,15 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     UserProvider userProvider = Provider.of<UserProvider>(context);
     print("NAME: ${userProvider.user.name}");
-    titleName = (userProvider.user.name != "NA" ? userProvider.user.name : userProvider.user.username)!;
+    titleName = (userProvider.user.name != "NA"
+        ? userProvider.user.name
+        : userProvider.user.username)!;
 
     return WillPopScope(
       onWillPop: () async {
         return false; // Prevent back navigation
       },
+
       child: Scaffold(
         backgroundColor: MyColors.boneWhite,
         appBar: AppBar(
@@ -104,40 +101,117 @@ class _HomeScreenState extends State<HomeScreen> {
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Hello!",
+              Text(
+                "Hello!",
                 style: TextStyle(
-                    fontSize: 12,
-                    fontFamily: MyFonts.poppins
+                  fontSize: 12,
+                  fontFamily: MyFonts.poppins,
                 ),
               ),
               Text(
                 titleName,
                 style: TextStyle(
-                    fontFamily: MyFonts.poppins,
-                    fontSize: 17
+                  fontFamily: MyFonts.poppins,
+                  fontSize: 17,
                 ),
               ),
             ],
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: recordAudio,
-          child: Icon(isRecording ? Icons.stop : Icons.mic), // Change icon based on recording state
+          onPressed: () async {
+            print("sam");
+            if (isRecording) {
+              String? filePath = await audioRecorder.stop();
+              if (filePath != null) {
+                setState(() {
+                  isRecording = false;
+                  recordingPath = filePath;
+                });
+                print("Recording stopped. File saved at: $filePath");
+
+                // Convert WAV to MP3
+              }
+            } else {
+              print("HELLO");
+              if (await audioRecorder.hasPermission()) {
+                final Directory appDocumentsDir =
+                await getApplicationDocumentsDirectory();
+                final String filePath =
+                p.join(appDocumentsDir.path, "recording.wav");
+                print("filepath: ${filePath}");
+                await audioRecorder.start(
+                  const RecordConfig(),
+                  path: filePath,
+                );
+                setState(() {
+                  isRecording = true;
+                  recordingPath = null;
+                });
+              }
+            }
+          },
+          child: Icon(
+            isRecording ? Icons.stop : Icons.mic,
+          ),
         ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Center(child: Text('HOME: ${userProvider.user.username}')),
-            CustomButton(
-              onClick: () async {
-                // Navigator.pushNamed(context, HomeTwoScreen.routeName);
-              },
-              buttonText: "CLICK",
-              borderRadius: 10,
-            ),
-          ],
+        body: SizedBox(
+          width: MediaQuery.sizeOf(context).width,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              if (recordingPath != null)
+                MaterialButton(
+                  onPressed: () async {
+                    if (audioPlayer.playing) {
+                      audioPlayer.stop();
+                      setState(() {
+                        isPlaying = false;
+                      });
+                    } else {
+                      print("Playing ${audioFileMp3}");
+                      await audioPlayer.setFilePath(recordingPath!);
+                      audioPlayer.play();
+                      setState(() {
+                        isPlaying = true;
+                      });
+                      String outputMp3Path = "/path/to/output.mp3";
+
+                      await sendWavFileToApi(recordingPath!);
+                    }
+                  },
+                  color: Theme.of(context).colorScheme.primary,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        isPlaying
+                            ? "Stop Playing Recording"
+                            : "Start Playing Recording",
+                        style: const TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      Text(
+                        "audio_path: ",
+                        style: const TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              if (recordingPath == null)
+                const Text(
+                  "User, say something...",
+                ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
+
+

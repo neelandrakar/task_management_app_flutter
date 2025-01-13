@@ -197,7 +197,7 @@ authRouter.post("/v1/auth/sign-in", async (req, res) => {
 });
 
 //Check JWT Token
-authRouter.post('/v1/auth/checkToken', auth,async (req,res)=>{
+authRouter.post('/v1/auth/checkToken', auth, async (req,res)=>{
 
   try{
       
