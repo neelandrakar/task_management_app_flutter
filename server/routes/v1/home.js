@@ -4,6 +4,7 @@ const auth = require('../../middleware/auth');
 const { getGreetingBasedOnTime, getCurrentWeekDays } = require('../../controller/homeController');
 const con = require("../../mysqlConnection"); // Import MySQL connection
 const TaskType = require('../../models/task_type_master'); // Import TaskType model
+const TaskMaster = require("../../models/task_master");
 
 homeRouter.post('/v1/home/get-dashboard', auth, async (req, res)=>{
     try{
@@ -41,23 +42,61 @@ homeRouter.post('/v1/home/get-dashboard', auth, async (req, res)=>{
     }
 });
 
-homeRouter.post('/v1/home/create-task', auth, async (req, res)=>{
+homeRouter.post('/v1/home/fetch-tasks', auth, async (req, res)=>{
     try{
 
-        let user_id = req.user;
         const taskTypes = await TaskType.findAll({
             where: {
               is_active: 1,
               d_status: 0
             },
-            attributes: ['task_type_name'] // Only fetch task_type_name
+            attributes: ['task_type_id', 'task_type_name'] // Only fetch task_type_name
           });
       
-        const taskTypeNames = taskTypes.map(task => task.task_type_name);
   
             res.status(201).json({
               success: true,
-              msg: taskTypeNames
+              msg: taskTypes
+            });
+        
+
+    }catch (e) {
+        res.status(500).json({ 
+          success: false,
+          msg: e.message
+         })
+    }
+});
+
+homeRouter.post('/v1/home/create-task', auth, async (req, res)=>{
+    try{
+
+        const { task_type_id, icon, title, description, priority, color,start_date, end_date, reminder_times } = req.body;
+        const user_id = req.user;
+
+        console.log(req.body);
+
+
+            let newTask = new TaskMaster({
+                task_type_id: task_type_id,
+                user_id: user_id,
+                icon: icon,
+                title: title,
+                description: description,
+                priority: priority,
+                color: color,
+                start_date: start_date,
+                end_date: end_date,
+                reminder_times: reminder_times
+
+            });
+            
+            newTask = await newTask.save();
+      
+  
+            res.status(201).json({
+              success: true,
+              msg: newTask
             });
         
 

@@ -1,0 +1,74 @@
+const { Sequelize, DataTypes, INTEGER } = require('sequelize');
+const sequelize = require('../config/database'); // Sequelize instance
+
+const TaskMaster = sequelize.define('TaskMaster',{
+    task_id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
+    task_type_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    user_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    icon: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    title: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    description: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: ""
+    },
+    status: {
+        type: DataTypes.ENUM('0', '1', '2', '3', '4'),
+        allowNull: true,
+        defaultValue: '0'
+    },
+    priority: {
+        type: DataTypes.ENUM('1','2','3'),
+        allowNull: false,
+        defaultValue: '2'
+    },
+    color: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    start_date: {
+        type: DataTypes.DATE,
+        allowNull: false
+    },
+    end_date: {
+        type: DataTypes.DATE,
+        allowNull: false
+    },
+    reminder_times: {
+        type: DataTypes.JSON,
+        allowNull: true
+    },
+    created_at: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW
+    },
+    updated_at: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW
+    },
+    d_status: {
+        type: INTEGER,
+        defaultValue: 0
+    }
+}, {
+    tableName: 'task_master',
+    timestamps: false
+});
+
+module.exports = TaskMaster;
