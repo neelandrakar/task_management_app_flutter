@@ -45,3 +45,4 @@ server.listen(PORT,'0.0.0.0',function(){
 
 // Import MySQL Connection (for immediate usage if needed)
 require("./mysqlConnection");
+require("./config/database");
