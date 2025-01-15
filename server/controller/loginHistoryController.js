@@ -19,7 +19,7 @@ const updateLoginHistory = async (io, user_id, deviceInfo) => {
           // Emit an event to notify that a different device has logged in
           io.emit('device_logged_in', {
             user_id,
-            message: 'You have been logged in from a different device.',
+            message: 'This account has been logged in from a different device.',
             deviceInfo: { 
               brand,
               model,

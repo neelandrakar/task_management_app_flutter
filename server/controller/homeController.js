@@ -30,8 +30,8 @@ function getCurrentWeekDays() {
     return weekDays;
 }
 
-function getWeekStartAndEndDates() {
-    const currentDate = new Date();
+function getWeekStartAndEndDates(fetchedDate) {
+    const currentDate = new Date(fetchedDate);
     const currentDay = currentDate.getDay(); // Get the current day (0 = Sunday, 6 = Saturday)
 
     // Calculate the offset for Monday and Saturday
@@ -46,15 +46,9 @@ function getWeekStartAndEndDates() {
     saturdayDate.setDate(currentDate.getDate() + saturdayOffset);
 
     // Create objects for start_date (Monday) and end_date (Saturday)
-    const start_date = {
-        mondayDate
-    };
+    
 
-    const end_date = {
-        saturdayDate
-    };
-
-    return { start_date, end_date };
+    return { mondayDate, saturdayDate };
 }
 
    

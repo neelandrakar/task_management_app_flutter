@@ -5,10 +5,14 @@ const { getGreetingBasedOnTime, getCurrentWeekDays, getWeekStartAndEndDates } = 
 const con = require("../../mysqlConnection"); // Import MySQL connection
 const TaskType = require('../../models/task_type_master'); // Import TaskType model
 const TaskMaster = require("../../models/task_master");
+const { fetchUserTasks } = require('../../controller/fetchUserTasksController');
+// const sequelize = require('../../config/database'); // Sequelize instance
+
 
 homeRouter.post('/v1/home/get-dashboard', auth, async (req, res)=>{
     try{
 
+        const { date } = req.body;
         let user_id = req.user; 
         homeRes = [];
         dayTask = [];
@@ -20,6 +24,13 @@ homeRouter.post('/v1/home/get-dashboard', auth, async (req, res)=>{
 
         greetingText = getGreetingBasedOnTime(currentTime);
         weekRange = getCurrentWeekDays();
+
+        startAndEndDates = getWeekStartAndEndDates(date);
+        const start_date = startAndEndDates.mondayDate;
+        const end_date = startAndEndDates.saturdayDate;
+        dayTask = await fetchUserTasks(user_id, start_date, end_date);
+
+        
 
         homeRes = {
             "greeting_text": greetingText,
@@ -52,17 +63,17 @@ homeRouter.post('/v1/home/fetch-tasks', auth, async (req, res)=>{
             },
             attributes: ['task_type_id', 'task_type_name','unit'] // Only fetch task_type_name
           });
+        
+          const currentDate = new Date();
 
-        weekRange = getWeekStartAndEndDates();
+        weekRange = getWeekStartAndEndDates(currentDate);
 
         let taskRes = {
             "week_range": weekRange,
             "task_types": taskTypes
-        }
+        }      
   
-      
-  
-        res.status(201).json({
+        res.status(200).json({
             success: true,
             msg: "Tasks are fetched!",
             result: taskRes

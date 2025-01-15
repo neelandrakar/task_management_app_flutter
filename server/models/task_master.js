@@ -1,5 +1,6 @@
 const { Sequelize, DataTypes, INTEGER } = require('sequelize');
 const sequelize = require('../config/database'); // Sequelize instance
+const TaskType = require('./task_type_master');
 
 const TaskMaster = sequelize.define('TaskMaster',{
     task_id: {
