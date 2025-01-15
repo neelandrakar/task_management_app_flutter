@@ -15,6 +15,14 @@ const TaskType = sequelize.define('TaskType', {
         type: DataTypes.TEXT,
         allowNull: true
     },
+    unit: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    icon: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     is_active: {
         type: DataTypes.TINYINT,
         defaultValue: 1

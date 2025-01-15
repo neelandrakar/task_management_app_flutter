@@ -15,10 +15,6 @@ const TaskMaster = sequelize.define('TaskMaster',{
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    icon: {
-        type: DataTypes.STRING,
-        allowNull: true
-    },
     title: {
         type: DataTypes.STRING,
         allowNull: true
@@ -48,6 +44,10 @@ const TaskMaster = sequelize.define('TaskMaster',{
     },
     end_date: {
         type: DataTypes.DATE,
+        allowNull: false
+    },
+    weekly_count: {
+        type: DataTypes.INTEGER,
         allowNull: false
     },
     reminder_times: {

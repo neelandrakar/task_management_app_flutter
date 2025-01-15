@@ -28,7 +28,35 @@ function getCurrentWeekDays() {
     }
    
     return weekDays;
-  }
+}
+
+function getWeekStartAndEndDates() {
+    const currentDate = new Date();
+    const currentDay = currentDate.getDay(); // Get the current day (0 = Sunday, 6 = Saturday)
+
+    // Calculate the offset for Monday and Saturday
+    const mondayOffset = currentDay === 0 ? -6 : 1 - currentDay;
+    const saturdayOffset = currentDay === 0 ? -1 : 6 - currentDay;
+
+    // Calculate Monday and Saturday dates
+    const mondayDate = new Date(currentDate);
+    mondayDate.setDate(currentDate.getDate() + mondayOffset);
+
+    const saturdayDate = new Date(currentDate);
+    saturdayDate.setDate(currentDate.getDate() + saturdayOffset);
+
+    // Create objects for start_date (Monday) and end_date (Saturday)
+    const start_date = {
+        mondayDate
+    };
+
+    const end_date = {
+        saturdayDate
+    };
+
+    return { start_date, end_date };
+}
+
    
 
-module.exports = { getGreetingBasedOnTime, getCurrentWeekDays };
+module.exports = { getGreetingBasedOnTime, getCurrentWeekDays, getWeekStartAndEndDates };
