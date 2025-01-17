@@ -24,7 +24,7 @@ function getCurrentWeekDays() {
       date.setDate(currentDate.getDate() + mondayOffset + i);
       const shortDayName = date.toLocaleDateString('en-US', { weekday: 'short' });
       const formattedDate = date.getDate();
-      weekDays.push({ day: shortDayName.toLowerCase(), date: formattedDate, isCurrent:  currentDate.getDate()==formattedDate});
+      weekDays.push({ day: shortDayName.toLowerCase(), date: formattedDate, isToday:  currentDate.getDate()==formattedDate});
     }
    
     return weekDays;

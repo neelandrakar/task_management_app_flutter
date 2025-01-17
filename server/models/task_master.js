@@ -51,6 +51,10 @@ const TaskMaster = sequelize.define('TaskMaster',{
         type: DataTypes.INTEGER,
         allowNull: false
     },
+    target: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
     reminder_times: {
         type: DataTypes.JSON,
         allowNull: true

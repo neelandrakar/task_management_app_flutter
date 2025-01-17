@@ -14,10 +14,10 @@ homeRouter.post('/v1/home/get-dashboard', auth, async (req, res)=>{
 
         const { date } = req.body;
         let user_id = req.user; 
-        homeRes = [];
-        dayTask = [];
-        dayChallange = [];
-        myHabits = [];
+        let homeRes = [];
+        let dayTask = [];
+        let dayChallange = [];
+        let myHabits = [];
         const currentTime = new Date();
         let greetingText = "NA";
         let weekRange = "NA";
@@ -30,8 +30,8 @@ homeRouter.post('/v1/home/get-dashboard', auth, async (req, res)=>{
         const end_date = startAndEndDates.saturdayDate;
         dayTask = await fetchUserTasks(user_id, start_date, end_date);
 
-        
-
+    
+    
         homeRes = {
             "greeting_text": greetingText,
             "week_range": weekRange,
