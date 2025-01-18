@@ -1,5 +1,6 @@
 const { Sequelize } = require("sequelize");
 
+
 // Create a Sequelize instance
 const sequelize = new Sequelize("task_management_schema", "root", "Neelandra@10", {
   host: "0.0.0.0", // Database host
