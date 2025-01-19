@@ -49,7 +49,8 @@ const fetchUserTasks = async (user_id, start_date, end_date) => {
                         //     [Op.between] : [start_date, end_date]
                         // },
                         d_status: 0
-                    }
+                    },
+                    required: false          //For LEFT JOIN
                 }
             ]
         });
