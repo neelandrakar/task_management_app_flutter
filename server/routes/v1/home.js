@@ -91,7 +91,7 @@ homeRouter.post('/v1/home/fetch-tasks', auth, async (req, res)=>{
 homeRouter.post('/v1/home/create-task', auth, async (req, res)=>{
     try{
 
-            const { task_type_id, title, description, priority, color,start_date, end_date,weekly_count, reminder_times } = req.body;
+            const { task_type_id, title, description, priority, color,start_date, end_date,weekly_count,target, reminder_times } = req.body;
             const user_id = req.user;
 
             let newTask = new TaskMaster({
@@ -104,6 +104,7 @@ homeRouter.post('/v1/home/create-task', auth, async (req, res)=>{
                 start_date: start_date,
                 end_date: end_date,
                 weekly_count: weekly_count,
+                target: target,
                 reminder_times: reminder_times
 
             });

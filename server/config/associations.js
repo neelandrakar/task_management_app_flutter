@@ -6,7 +6,7 @@ const TaskDaywiseStreak = require('../models/task_daywise_streak');
 TaskMaster.belongsTo(TaskType, { foreignKey: 'task_type_id' });
 TaskType.hasMany(TaskMaster, { foreignKey: 'task_type_id' });
 
-TaskDaywiseStreak.belongsToMany(TaskMaster, {
+TaskDaywiseStreak.belongsTo(TaskMaster, {
     foreignKey: 'task_id'
 });
 TaskMaster.hasMany(TaskDaywiseStreak, {

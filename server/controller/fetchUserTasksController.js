@@ -45,9 +45,10 @@ const fetchUserTasks = async (user_id, start_date, end_date) => {
                     model: TaskDaywiseStreak,
                     attributes: { exclude: [] },
                     where: {
-                        created_at : {
-                            [Op.between] : [start_date, end_date]
-                        }
+                        // created_at : {
+                        //     [Op.between] : [start_date, end_date]
+                        // },
+                        d_status: 0
                     }
                 }
             ]
