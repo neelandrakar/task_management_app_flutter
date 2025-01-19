@@ -35,6 +35,7 @@ const fetchUserTasks = async (user_id, start_date, end_date) => {
                 [sequelize.col('TaskType.task_type_name'), 'task_type_name'],
                 [sequelize.col('TaskType.description'), 'task_type_description'],
                 [sequelize.col('TaskType.unit'), 'task_unit'],
+                //[sequelize.col('TaskDaywiseStreaks.streak_id'), 'streak_id'],
             ],
             include: [
                 {
@@ -43,7 +44,7 @@ const fetchUserTasks = async (user_id, start_date, end_date) => {
                 },
                 {
                     model: TaskDaywiseStreak,
-                    attributes: { exclude: [] },
+                    attributes: {include: []},
                     where: {
                         // created_at : {
                         //     [Op.between] : [start_date, end_date]
@@ -52,7 +53,8 @@ const fetchUserTasks = async (user_id, start_date, end_date) => {
                     },
                     required: false          //For LEFT JOIN
                 }
-            ]
+            ],
+            //raw: true
         });
         
         

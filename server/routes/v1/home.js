@@ -1,11 +1,12 @@
 const express = require("express");
 const homeRouter = express.Router();
 const auth = require('../../middleware/auth');
-const { getGreetingBasedOnTime, getCurrentWeekDays, getWeekStartAndEndDates } = require('../../controller/homeController');
+const { getGreetingBasedOnTime, getCurrentWeekDays, getWeekStartAndEndDates, countConsecutive } = require('../../controller/homeController');
 const con = require("../../mysqlConnection"); // Import MySQL connection
 const TaskType = require('../../models/task_type_master'); // Import TaskType model
 const TaskMaster = require("../../models/task_master");
 const { fetchUserTasks } = require('../../controller/fetchUserTasksController');
+const { getDateDifference } = require('../../controller/dateController');
 // const sequelize = require('../../config/database'); // Sequelize instance
 
 
@@ -29,8 +30,28 @@ homeRouter.post('/v1/home/get-dashboard', auth, async (req, res)=>{
         const start_date = startAndEndDates.mondayDate;
         const end_date = startAndEndDates.saturdayDate;
         dayTask = await fetchUserTasks(user_id, start_date, end_date);
+        dayTaskCopy = [...dayTask];
 
-    
+        console.log(dayTask[0]['TaskDaywiseStreaks'][0]['created_at']);
+
+        for(i=0; i<dayTaskCopy.length; i++){
+            let streak = 0;
+            let streakDates = [];
+
+            
+            for(j=0; j<dayTaskCopy[i]['TaskDaywiseStreaks'].length; j++){
+
+                const streakDate = new Date(dayTaskCopy[i]['TaskDaywiseStreaks'][j]['created_at']);
+
+                const dateDiff = getDateDifference(currentTime,streakDate);
+                // console.log(`dateDiff between ${streakDate} and ${currentTime}: ${dateDiff}`);
+                if(dateDiff<=0){
+                streakDates.push(dateDiff);
+            }
+            }
+            streak = countConsecutive(streakDates);
+            dayTaskCopy[i].streak = streak;
+        } 
     
         homeRes = {
             "greeting_text": greetingText,

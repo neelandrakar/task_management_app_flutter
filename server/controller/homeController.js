@@ -51,6 +51,22 @@ function getWeekStartAndEndDates(fetchedDate) {
     return { mondayDate, saturdayDate };
 }
 
+function countConsecutive(arr) {
+    let count = 0;
+    arr.sort((a, b) => b - a);
+
+    for (let i = 0; i < arr.length - 1; i++) {
+        // Check if the difference between adjacent elements is 1
+        if (Math.abs(arr[i] - arr[i + 1]) === 1) {
+            count++;
+        } else {
+            break;
+        }
+    }
+
+    return count;
+}
+
    
 
-module.exports = { getGreetingBasedOnTime, getCurrentWeekDays, getWeekStartAndEndDates };
+module.exports = { getGreetingBasedOnTime, getCurrentWeekDays, getWeekStartAndEndDates, countConsecutive };
