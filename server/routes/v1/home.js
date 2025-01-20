@@ -30,16 +30,19 @@ homeRouter.post('/v1/home/get-dashboard', auth, async (req, res)=>{
         const start_date = startAndEndDates.mondayDate;
         const end_date = startAndEndDates.saturdayDate;
         dayTask = await fetchUserTasks(user_id, start_date, end_date);
+        dayTask = dayTask.map(task => task.get({ plain: true }));  //To prevent dayTask from acting like a model
 
         //console.log(dayTask[0]['TaskDaywiseStreaks'][0]['created_at']);
 
         for(i=0; i<dayTask.length; i++){
             let streak = 0;
             let streakDates = [];
+            let total_done = 0;
 
             for(j=0; j<dayTask[i]['TaskDaywiseStreaks'].length; j++){
 
                 const streakDate = new Date(dayTask[i]['TaskDaywiseStreaks'][j]['created_at']);
+                total_done += dayTask[i]['TaskDaywiseStreaks'][j]['target_reached'];
 
                 const dateDiff = getDateDifference(currentTime,streakDate);
                 // console.log(`dateDiff between ${streakDate} and ${currentTime}: ${dateDiff}`);
@@ -50,7 +53,20 @@ homeRouter.post('/v1/home/get-dashboard', auth, async (req, res)=>{
             console.log(streakDates);
             streak = countConsecutive(streakDates);
             dayTask[i].streak = streak;
-        } 
+            dayTask[i].total_done = total_done;
+
+            dayTask[i] = {
+                task_id: dayTask[i].task_id,
+                task_type_name: dayTask[i].task_type_name,
+                task_unit: dayTask[i].task_unit,
+                streak: dayTask[i].streak,
+                total_done: dayTask[i].total_done,
+                target: dayTask[i].target,
+                color: dayTask[i].color,
+                task_icon: dayTask[i].task_icon
+            };
+        }
+        
     
         homeRes = {
             "greeting_text": greetingText,

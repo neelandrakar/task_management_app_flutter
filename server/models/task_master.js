@@ -16,6 +16,10 @@ const TaskMaster = sequelize.define('TaskMaster',{
         type: DataTypes.INTEGER,
         allowNull: true
     },
+    total_done: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+    },
     user_id: {
         type: DataTypes.INTEGER,
         allowNull: false

@@ -20,9 +20,9 @@ const TaskType = sequelize.define('TaskType', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    icon: {
+    image: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
     is_active: {
         type: DataTypes.TINYINT,
