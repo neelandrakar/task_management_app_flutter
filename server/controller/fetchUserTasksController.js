@@ -5,7 +5,7 @@ const { Op } = require('sequelize');
 
 const fetchUserTasks = async (user_id, start_date, end_date) => {
 
-    console.log(`start_date: ${start_date} && end_date: ${end_date}`);
+    //console.log(`start_date: ${start_date} && end_date: ${end_date}`);
     try {
 
         const allTasks = await TaskMaster.findAll({

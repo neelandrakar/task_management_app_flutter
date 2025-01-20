@@ -31,7 +31,7 @@ homeRouter.post('/v1/home/get-dashboard', auth, async (req, res)=>{
         const end_date = startAndEndDates.saturdayDate;
         dayTask = await fetchUserTasks(user_id, start_date, end_date);
 
-        console.log(dayTask[0]['TaskDaywiseStreaks'][0]['created_at']);
+        //console.log(dayTask[0]['TaskDaywiseStreaks'][0]['created_at']);
 
         for(i=0; i<dayTask.length; i++){
             let streak = 0;
@@ -44,9 +44,10 @@ homeRouter.post('/v1/home/get-dashboard', auth, async (req, res)=>{
                 const dateDiff = getDateDifference(currentTime,streakDate);
                 // console.log(`dateDiff between ${streakDate} and ${currentTime}: ${dateDiff}`);
                 if(dateDiff<=0){
-                streakDates.push(dateDiff);
+                    streakDates.push(dateDiff);
+                }
             }
-            }
+            console.log(streakDates);
             streak = countConsecutive(streakDates);
             dayTask[i].streak = streak;
         } 

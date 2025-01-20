@@ -6,7 +6,7 @@ const getDateDifference = (date1, date2) => {
     const endDate = new Date(date2);
 
     // Calculate the difference in milliseconds
-    const diffInMilliseconds = endDate - startDate;
+    const diffInMilliseconds = endDate.getDate() - startDate.getDate();
 
     // Convert milliseconds to days
     const diffInDays = Math.floor(diffInMilliseconds / (1000 * 60 * 60 * 24));
