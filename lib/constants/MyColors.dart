@@ -45,4 +45,8 @@ class MyColors{
   static  const Color loyaltyRed = Color(0xFFFF5A5F);
   static  const Color loyaltyRedLowOpacity = Color(0xFFDEA1A1);
 
+  //Start of TMA
+  static const Color darkBlue = Color(0xFF1F2937);
+  static const Color darkBlack = Color(0xFF111827);
+
 }

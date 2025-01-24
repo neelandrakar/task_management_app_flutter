@@ -8,6 +8,7 @@ import 'package:task_management_app_flutter/auth/screens/welcome_screen.dart';
 import 'package:task_management_app_flutter/auth/services/auth_services.dart';
 import 'package:task_management_app_flutter/constants/secured_storage.dart';
 import 'package:task_management_app_flutter/constants/utils.dart';
+import 'package:task_management_app_flutter/dashboard/screens/dashboard_screen.dart';
 import 'package:task_management_app_flutter/home/screens/home_screen.dart';
 import 'package:task_management_app_flutter/providers/user_provider.dart';
 import 'package:task_management_app_flutter/router.dart';
@@ -108,7 +109,7 @@ class _MyAppState extends State<MyApp> {
               useMaterial3: true,
             ),
             home: Provider.of<UserProvider>(context).user.jwt_token.isNotEmpty
-                ? HomeScreen()
+                ? DashboardScreen()
                 : WelcomeScreen(),
           );
         }
