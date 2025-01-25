@@ -41,5 +41,6 @@ class DashboardModel {
 
   String toJson() => json.encode(toMap());
 
-  factory DashboardModel.fromJson(String source) => DashboardModel.fromMap(json.decode(source));
+  factory DashboardModel.fromJson(String source) =>
+      DashboardModel.fromMap(json.decode(source));
 }
