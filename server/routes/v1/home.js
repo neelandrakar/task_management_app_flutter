@@ -59,7 +59,7 @@ homeRouter.post('/v1/home/get-dashboard', auth, async (req, res)=>{
                 task_id: dayTask[i].task_id,
                 task_type_name: dayTask[i].task_type_name,
                 task_unit: dayTask[i].task_unit,
-                streak: dayTask[i].streak,
+                streak: dayTask[i].streak, 
                 total_done: dayTask[i].total_done,
                 target: dayTask[i].target,
                 color: dayTask[i].color,
