@@ -45,8 +45,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
       socketService.connectToRoom(getUserId(context), context);
 
       // Initiate Dashboard Data Fetch
-      _fetchDashboardFuture = _fetchDashboardData();
     });
+    _fetchDashboardFuture = _fetchDashboardData();
+
   }
 
   @override

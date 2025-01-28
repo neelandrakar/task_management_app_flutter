@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../providers/user_provider.dart';
 
 double horizontal_padding = 15;
-String uri = 'http://192.168.172.6:3000';
+String uri = 'http://192.168.165.6:3000';
 String? device_os_version = "0";
 String device_id = "NA";
 String model_name = "NA";

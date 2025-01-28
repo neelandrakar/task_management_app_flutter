@@ -3,7 +3,7 @@ import 'dart:convert';
 
 class WeekListModel {
   final String day;
-  final String date;
+  final int date;
   final bool isToday;
   WeekListModel({
     required this.day,
@@ -22,7 +22,7 @@ class WeekListModel {
   factory WeekListModel.fromMap(Map<String, dynamic> map) {
     return WeekListModel(
       day: map['day'] as String,
-      date: map['date'] as String,
+      date: map['date'] as int,
       isToday: map['isToday'] as bool,
     );
   }

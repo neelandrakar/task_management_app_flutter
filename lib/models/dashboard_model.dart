@@ -26,16 +26,10 @@ class DashboardModel {
   factory DashboardModel.fromMap(Map<String, dynamic> map) {
     return DashboardModel(
       greeting_text: map['greeting_text'] as String,
-      week_range: List<WeekListModel>.from(
-        (map['week_range'] as List<int>).map<WeekListModel>(
-          (x) => WeekListModel.fromMap(x as Map<String, dynamic>),
-        ),
-      ),
-      day_task: List<DayTaskModel>.from(
-        (map['day_task'] as List<int>).map<DayTaskModel>(
-          (x) => DayTaskModel.fromMap(x as Map<String, dynamic>),
-        ),
-      ),
+      week_range: List<WeekListModel>.from(map['week_range']
+          .map((x) => WeekListModel.fromMap(x))),
+      day_task: List<DayTaskModel>.from(map['day_task']
+          .map((x) => DayTaskModel.fromMap(x))),
     );
   }
 
