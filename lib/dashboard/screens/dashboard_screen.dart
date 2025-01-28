@@ -89,10 +89,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   children: [
                     Text(
                         dashboardModel.greeting_text,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 25,
-                        fontFamily: MyFonts.poppins
+                        fontFamily: MyFonts.poppins,
+                        fontWeight: FontWeight.w500
                       ),
                     )
                   ],
