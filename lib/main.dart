@@ -10,6 +10,7 @@ import 'package:task_management_app_flutter/constants/secured_storage.dart';
 import 'package:task_management_app_flutter/constants/utils.dart';
 import 'package:task_management_app_flutter/dashboard/screens/dashboard_screen.dart';
 import 'package:task_management_app_flutter/home/screens/home_screen.dart';
+import 'package:task_management_app_flutter/providers/dashboard_provider.dart';
 import 'package:task_management_app_flutter/providers/user_provider.dart';
 import 'package:task_management_app_flutter/router.dart';
 import 'package:task_management_app_flutter/socket/services/socket_service.dart';
@@ -23,6 +24,7 @@ void main() async {
     providers: [
       ChangeNotifierProvider(create: (context) => UserProvider()),
       ChangeNotifierProvider(create: (_) => SocketService()),
+      ChangeNotifierProvider(create: (_) => DashboardProvider()),
     ],
     child: const MyApp(),
   ));

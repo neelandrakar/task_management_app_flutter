@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
+import 'package:task_management_app_flutter/models/dashboard_model.dart';
+import 'package:task_management_app_flutter/providers/dashboard_provider.dart';
 
 import '../../constants/global_variables.dart';
 import '../../constants/http_error_handeling.dart';
@@ -19,6 +22,8 @@ class DashboardServices{
         "date": "2025-01-23"
       };
     print("neel");
+    var dashboard_provider = Provider.of<DashboardProvider>(context, listen: false);
+
       String jsonBody = jsonEncode(data);
       http.Response res = await http.post(Uri.parse('$uri/v1/home/get-dashboard'),
           body: jsonBody,
@@ -31,7 +36,10 @@ class DashboardServices{
           response: res,
           onSuccess: () async {
             print("Starting");
-            print(res.body);
+            var messageArray = jsonDecode(res.body)['msg'];
+            print(messageArray);
+            dashboard_provider.getDashboardData(DashboardModel.fromJson(jsonEncode(messageArray)), context);
+            print("greet_text ${dashboard_provider.dashboardModel.greeting_text}");
             onSuccess.call();
           }
       );
