@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:task_management_app_flutter/constants/MyColors.dart';
 import 'package:task_management_app_flutter/constants/my_fonts.dart';
 import 'package:task_management_app_flutter/dashboard/services/dashboard_services.dart';
+import 'package:task_management_app_flutter/dashboard/widgets/day_widget.dart';
 import 'package:task_management_app_flutter/models/dashboard_model.dart';
 
 import '../../constants/utils.dart';
@@ -88,13 +89,34 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 child: Column(
                   children: [
                     Text(
-                        dashboardModel.greeting_text,
-                      style: const TextStyle(
-                        color: Colors.white,
+                      dashboardModel.greeting_text,
+                      style: TextStyle(
+                        color: MyColors.boneWhite, // Base text color
                         fontSize: 25,
                         fontFamily: MyFonts.poppins,
-                        fontWeight: FontWeight.w500
+                        fontWeight: FontWeight.w500, // Slightly bolder for a modern feel
+                        shadows: [
+                          Shadow(
+                            color: Colors.black.withOpacity(0.3), // Subtle shadow for depth
+                            offset: Offset(2, 2),
+                            blurRadius: 4,
+                          ),
+                        ],
+                        letterSpacing: 1.2, // Slightly spaced-out letters for a modern touch
                       ),
+                    ),
+                    ListView.separated(
+                        itemBuilder: (context, index){
+                          return DayWidget(
+                              day: dashboardModel.week_range[index].day,
+                              isToday: dashboardModel.week_range[index].isToday,
+                              date: dashboardModel.week_range[index].date
+                          );
+                        },
+                        separatorBuilder: (context, index){
+                          return SizedBox(width: 10);
+                        },
+                        itemCount: dashboardModel.day_task.length
                     )
                   ],
                 ),
