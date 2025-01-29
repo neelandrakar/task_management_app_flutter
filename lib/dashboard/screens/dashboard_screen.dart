@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:task_management_app_flutter/constants/MyColors.dart';
 import 'package:task_management_app_flutter/constants/my_fonts.dart';
 import 'package:task_management_app_flutter/dashboard/services/dashboard_services.dart';
+import 'package:task_management_app_flutter/dashboard/widgets/day_task_widget.dart';
 import 'package:task_management_app_flutter/dashboard/widgets/day_widget.dart';
 import 'package:task_management_app_flutter/models/dashboard_model.dart';
 
@@ -139,10 +140,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         mainAxisSpacing: 10,
                         crossAxisCount: 2,
                         children: List.generate(dashboardModel.day_task.length, (index) {
-                          return Container(
-                            padding: const EdgeInsets.all(8),
-                            color: Colors.teal[100 + (index % 6) * 100],
-                            child: Text(dashboardModel.day_task[index].task_type_name),
+                          return DayTaskWidget(
+                              task_type_name: dashboardModel.day_task[index].task_type_name,
+                              task_icon: dashboardModel.day_task[index].task_icon,
+                              target: dashboardModel.day_task[index].target,
+                              total_done: dashboardModel.day_task[index].total_done,
+                              task_color: dashboardModel.day_task[index].color,
+                              task_unit: dashboardModel.day_task[index].task_unit,
+                              streak: dashboardModel.day_task[index].streak,
                           );
                         }),
                       ),

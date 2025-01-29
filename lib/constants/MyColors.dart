@@ -48,5 +48,6 @@ class MyColors{
   //Start of TMA
   static const Color darkBlue = Color(0xFF1F2937);
   static const Color darkBlack = Color(0xFF111827);
+  static const Color greyBlue = Color(0xFF374151);
 
 }
