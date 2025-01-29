@@ -13,23 +13,41 @@ class DayWidget extends StatefulWidget {
 }
 
 class _DayWidgetState extends State<DayWidget> {
+
+
   @override
   Widget build(BuildContext context) {
+
+    Color textColor = widget.isToday ? MyColors.boneWhite : MyColors.greyColor;
+    Color borderColor = widget.isToday ? MyColors.boneWhite : MyColors.darkBlack;
+
     return Container(
+      padding: const EdgeInsets.all(5),
+      decoration: BoxDecoration(
+        border: Border.all(color: borderColor, width: 0.5),
+        borderRadius: BorderRadius.circular(20)
+        // color: Colors.red
+      ),
+      height: double.infinity,
+      width:10,
+      alignment: Alignment.center,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-            Text(widget.date.toString(),
+            Text(widget.day,
+              maxLines: 1,
               style: TextStyle(
                 fontFamily: MyFonts.poppins,
                 fontSize: 13,
-                color: MyColors.fadedBlack
+                color: textColor,
               ),
             ),
-            Text(widget.day,
+            Text(widget.date.toString(),
+              maxLines: 1,
               style: TextStyle(
-                  fontFamily: MyFonts.poppins,
-                  fontSize: 13,
-                  color: MyColors.fadedBlack
+                fontFamily: MyFonts.poppins,
+                fontSize: 13,
+                color: textColor
               ),
             )
         ],
