@@ -32,7 +32,7 @@ homeRouter.post('/v1/home/get-dashboard', auth, async (req, res)=>{
         dayTask = await fetchUserTasks(user_id, start_date, end_date);
         dayTask = dayTask.map(task => task.get({ plain: true }));  //To prevent dayTask from acting like a model
 
-        //console.log(dayTask[0]['TaskDaywiseStreaks'][0]['created_at']);
+        // console.log(dayTask[0]['TaskDaywiseStreaks']);
 
         for(i=0; i<dayTask.length; i++){
             let streak = 0;
@@ -42,12 +42,16 @@ homeRouter.post('/v1/home/get-dashboard', auth, async (req, res)=>{
             for(j=0; j<dayTask[i]['TaskDaywiseStreaks'].length; j++){
 
                 const streakDate = new Date(dayTask[i]['TaskDaywiseStreaks'][j]['created_at']);
-                total_done += dayTask[i]['TaskDaywiseStreaks'][j]['target_reached'];
+                //console.log(`STREAK DATE: ${streakDate}`);
 
                 const dateDiff = getDateDifference(currentTime,streakDate);
                 // console.log(`dateDiff between ${streakDate} and ${currentTime}: ${dateDiff}`);
+                
                 if(dateDiff<=0){
                     streakDates.push(dateDiff);
+                    if(dateDiff==0){
+                        total_done = dayTask[i]['TaskDaywiseStreaks'][j]['target_reached'];
+                    }
                 }
             }
             console.log(streakDates);
