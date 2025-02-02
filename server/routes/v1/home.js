@@ -100,13 +100,22 @@ homeRouter.post('/v1/home/add-streak', auth, async (req, res)=>{
         const { task_id } = req.body;
         weekRange = getCurrentWeekDays();
 
-        hasDoneTask = await dayWiseTask(task_id, '2025-01-20 11:37:23');
-        console.log(`xxx: ${hasDoneTask}`);
+        for(i=0; i<weekRange.length; i++){
+
+            let hasDone = false;
+
+            hasDoneTask = await dayWiseTask(task_id, weekRange[i].full_date);
+
+            hasDone = hasDoneTask.length>0 ? true : false;
+            weekRange[i].hasDone = hasDone;
+            
+        }
+
 
 
         res.status(200).json({
             success: true,
-            msg: hasDoneTask
+            msg: weekRange
         })
 
 
