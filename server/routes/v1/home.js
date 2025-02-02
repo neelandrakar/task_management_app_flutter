@@ -7,6 +7,7 @@ const TaskType = require('../../models/task_type_master'); // Import TaskType mo
 const TaskMaster = require("../../models/task_master");
 const { fetchUserTasks } = require('../../controller/fetchUserTasksController');
 const { getDateDifference } = require('../../controller/dateController');
+const {dayWiseTask} = require('../../controller/dayWiseTaskController');
 // const sequelize = require('../../config/database'); // Sequelize instance
 
 
@@ -92,6 +93,31 @@ homeRouter.post('/v1/home/get-dashboard', auth, async (req, res)=>{
          })
     }
 });
+
+homeRouter.post('/v1/home/add-streak', auth, async (req, res)=>{
+    try{
+
+        const { task_id } = req.body;
+        weekRange = getCurrentWeekDays();
+
+        hasDoneTask = await dayWiseTask(task_id, '2025-01-20 11:37:23');
+        console.log(`xxx: ${hasDoneTask}`);
+
+
+        res.status(200).json({
+            success: true,
+            msg: hasDoneTask
+        })
+
+
+    }catch (e) {
+        res.status(500).json({ 
+          success: false,
+          msg: e.message
+         })
+    }
+});
+
 
 homeRouter.post('/v1/home/fetch-tasks', auth, async (req, res)=>{
     try{
