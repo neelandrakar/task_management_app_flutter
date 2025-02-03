@@ -55,7 +55,7 @@ homeRouter.post('/v1/home/get-dashboard', auth, async (req, res)=>{
                     }
                 }
             }
-            console.log(streakDates);
+            console.log(`streakDates: ${streakDates}`);
             streak = countConsecutive(streakDates);
             dayTask[i].streak = streak;
             dayTask[i].total_done = total_done;
@@ -99,6 +99,9 @@ homeRouter.post('/v1/home/add-streak', auth, async (req, res)=>{
 
         const { task_id } = req.body;
         weekRange = getCurrentWeekDays();
+        let streak = 0;
+        let streakDates = [];
+        const currentTime = new Date();
 
         for(i=0; i<weekRange.length; i++){
 
@@ -106,16 +109,35 @@ homeRouter.post('/v1/home/add-streak', auth, async (req, res)=>{
 
             hasDoneTask = await dayWiseTask(task_id, weekRange[i].full_date);
 
-            hasDone = hasDoneTask.length>0 ? true : false;
+            if(hasDoneTask.length>0){
+                hasDone = true;
+                let streakDate = hasDoneTask[0].created_at;
+
+                
+                const dateDiff = getDateDifference(currentTime,streakDate);
+                if(dateDiff<=1){
+                    streakDates.push(dateDiff);
+                }
+            }
             weekRange[i].hasDone = hasDone;
-            
+        }
+
+        // console.log(`streakDays: ${streakDates}`);
+
+        streak = countConsecutive(streakDates);
+
+        console.log(`streak: ${streak}`)
+
+        finalRes = {
+            "week_range": weekRange,
+            "streak": streak
         }
 
 
 
         res.status(200).json({
             success: true,
-            msg: weekRange
+            msg: finalRes
         })
 
 
