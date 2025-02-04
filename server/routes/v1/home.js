@@ -130,7 +130,8 @@ homeRouter.post('/v1/home/add-streak', auth, async (req, res)=>{
 
         finalRes = {
             "week_range": weekRange,
-            "streak": streak
+            "streak": streak,
+            "streak_text": streak>1 ? "DAYS STREAK" : "DAY STREAK"
         }
 
 
