@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:task_management_app_flutter/auth/screens/login_screen.dart';
+import 'package:task_management_app_flutter/dashboard/screens/add_streak_screen.dart';
 import 'package:task_management_app_flutter/dashboard/screens/dashboard_screen.dart';
 import 'package:task_management_app_flutter/home/screens/home_screen.dart';
 import 'package:task_management_app_flutter/home/screens/home_two.dart';
@@ -19,6 +20,15 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
         settings: routeSettings,
         builder: (_) => const DashboardScreen(),
+      );
+
+    case AddStreakScreen.routeName:
+      AddStreakScreen addStreakScreen = routeSettings.arguments as AddStreakScreen;
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (_) => AddStreakScreen(
+          task_id: addStreakScreen.task_id,
+          task_type_name: addStreakScreen.task_type_name,),
       );
 
     case HomeScreen.routeName: // Assuming you have a HomeScreen

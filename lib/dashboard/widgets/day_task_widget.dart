@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:task_management_app_flutter/constants/MyColors.dart';
+import 'package:task_management_app_flutter/dashboard/screens/add_streak_screen.dart';
 
 import '../../constants/my_fonts.dart';
 
 class DayTaskWidget extends StatefulWidget {
+  final int task_id;
   final String task_type_name;
   final String task_icon;
   final int target;
@@ -13,6 +15,7 @@ class DayTaskWidget extends StatefulWidget {
   final int streak;
   const DayTaskWidget({
     super.key,
+    required this.task_id,
     required this.task_type_name,
     required this.task_icon,
     required this.target,
@@ -27,6 +30,15 @@ class DayTaskWidget extends StatefulWidget {
 }
 
 class _DayTaskWidgetState extends State<DayTaskWidget> {
+
+  void navigateToAddStreak(int task_id, String task_type_name){
+
+    final arguments = AddStreakScreen(task_id: task_id, task_type_name: task_type_name,);
+
+    Navigator.pushNamed(context, AddStreakScreen.routeName, arguments: arguments);
+  }
+
+
   @override
   Widget build(BuildContext context) {
 
@@ -111,6 +123,8 @@ class _DayTaskWidgetState extends State<DayTaskWidget> {
                 icon: Icon(Icons.add, color: MyColors.boneWhite, size: 20 ),
                 onPressed: () {
                   // Add your onPressed logic here
+
+                  navigateToAddStreak(7, widget.task_type_name);
                 },
               ),
             ],

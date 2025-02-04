@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:task_management_app_flutter/models/dashboard_model.dart';
 import 'package:task_management_app_flutter/providers/dashboard_provider.dart';
+import 'package:task_management_app_flutter/providers/user_provider.dart';
 
 import '../../constants/global_variables.dart';
 import '../../constants/http_error_handeling.dart';
@@ -23,13 +24,15 @@ class DashboardServices{
       };
     print("neel");
     var dashboard_provider = Provider.of<DashboardProvider>(context, listen: false);
+    final user = Provider
+          .of<UserProvider>(context, listen: false).user;
 
       String jsonBody = jsonEncode(data);
       http.Response res = await http.post(Uri.parse('$uri/v1/home/get-dashboard'),
           body: jsonBody,
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
-            'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiaWF0IjoxNzM2MTUzMTU3fQ.caFGSiME-swQnlLkrwz33RG9B6eGjN_qtkTEL-7GvmA'
+            'x-auth-token': user.jwt_token
           });
 
       HttpErroHandeling(
@@ -40,6 +43,44 @@ class DashboardServices{
             print(messageArray);
             dashboard_provider.getDashboardData(DashboardModel.fromJson(jsonEncode(messageArray)), context);
             print("greet_text ${dashboard_provider.dashboardModel.greeting_text}");
+            onSuccess.call();
+          }
+      );
+
+    }catch(e){
+      print("Error: $e");
+      //showSnackbar(e.toString());
+    }
+  }
+
+  void callAddStreakInfo({
+    required BuildContext context,
+    required VoidCallback onSuccess,
+    required int task_id
+  })async{
+
+    try{
+
+      Map data = {
+        "task_id": task_id
+      };
+      final user = Provider
+          .of<UserProvider>(context, listen: false).user;
+
+      String jsonBody = jsonEncode(data);
+      http.Response res = await http.post(Uri.parse('$uri/v1/home/add-streak-info'),
+          body: jsonBody,
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'x-auth-token': user.jwt_token
+      });
+
+      HttpErroHandeling(
+          response: res,
+          onSuccess: () async {
+            print("Starting");
+            print(res.body);
+
             onSuccess.call();
           }
       );

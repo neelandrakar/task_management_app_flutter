@@ -141,6 +141,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         crossAxisCount: 2,
                         children: List.generate(dashboardModel.day_task.length, (index) {
                           return DayTaskWidget(
+                              task_id: dashboardModel.day_task[index].task_id,
                               task_type_name: dashboardModel.day_task[index].task_type_name,
                               task_icon: dashboardModel.day_task[index].task_icon,
                               target: dashboardModel.day_task[index].target,

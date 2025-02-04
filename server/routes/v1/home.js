@@ -94,7 +94,7 @@ homeRouter.post('/v1/home/get-dashboard', auth, async (req, res)=>{
     }
 });
 
-homeRouter.post('/v1/home/add-streak', auth, async (req, res)=>{
+homeRouter.post('/v1/home/add-streak-info', auth, async (req, res)=>{
     try{
 
         const { task_id } = req.body;
