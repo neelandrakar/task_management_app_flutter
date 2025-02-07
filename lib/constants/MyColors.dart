@@ -49,5 +49,6 @@ class MyColors{
   static const Color darkBlue = Color(0xFF1F2937);
   static const Color darkBlack = Color(0xFF111827);
   static const Color greyBlue = Color(0xFF374151);
+  static const Color redCheckBoxColor = Color(0xFFFE5858);
 
 }

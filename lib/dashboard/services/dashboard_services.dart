@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import 'package:task_management_app_flutter/models/add_streak_info_model.dart';
 import 'package:task_management_app_flutter/models/dashboard_model.dart';
+import 'package:task_management_app_flutter/providers/add_streak_info_provider.dart';
 import 'package:task_management_app_flutter/providers/dashboard_provider.dart';
 import 'package:task_management_app_flutter/providers/user_provider.dart';
 
@@ -66,6 +68,8 @@ class DashboardServices{
       };
       final user = Provider
           .of<UserProvider>(context, listen: false).user;
+      final addStreakProvider = Provider.of<AddStreakInfoProvider>(context, listen: false);
+
 
       String jsonBody = jsonEncode(data);
       http.Response res = await http.post(Uri.parse('$uri/v1/home/add-streak-info'),
@@ -80,6 +84,9 @@ class DashboardServices{
           onSuccess: () async {
             print("Starting");
             print(res.body);
+
+            var messageArray = jsonDecode(res.body)['msg'];
+            addStreakProvider.getAddStreakInfo(AddStreakInfoModel.fromJson(jsonEncode(messageArray)), context);
 
             onSuccess.call();
           }

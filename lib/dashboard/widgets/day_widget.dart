@@ -6,7 +6,8 @@ class DayWidget extends StatefulWidget {
   final String day;
   final bool isToday;
   final int date;
-  const DayWidget({super.key, required this.day, required this.isToday, required this.date});
+  final bool? hasDone;
+  const DayWidget({super.key, required this.day, required this.isToday, required this.date, this.hasDone});
 
   @override
   State<DayWidget> createState() => _DayWidgetState();
@@ -20,6 +21,31 @@ class _DayWidgetState extends State<DayWidget> {
 
     Color textColor = widget.isToday ? MyColors.boneWhite : MyColors.greyColor;
     Color borderColor = widget.isToday ? MyColors.boneWhite : MyColors.darkBlack;
+
+    getDataTickWidget(){
+      print('xx ${widget.hasDone}');
+      if(widget.hasDone==null){
+        return Text(widget.date.toString(),
+          maxLines: 1,
+          style: TextStyle(
+              fontFamily: MyFonts.poppins,
+              fontSize: 13,
+              color: textColor
+          ),
+        );
+      } else {
+        if(widget.hasDone!) {
+          return Icon(Icons.check_box_rounded, color: MyColors.redCheckBoxColor,);
+        } else {
+          if(!widget.isToday) {
+            return Icon(Icons.check_box_outline_blank_outlined,
+              color: MyColors.greyColor,);
+          } else {
+            return Icon(Icons.square_rounded,
+              color: MyColors.greyColor,);          }
+        }
+      }
+    }
 
     return Container(
       padding: const EdgeInsets.all(5),
@@ -42,14 +68,8 @@ class _DayWidgetState extends State<DayWidget> {
                 color: textColor,
               ),
             ),
-            Text(widget.date.toString(),
-              maxLines: 1,
-              style: TextStyle(
-                fontFamily: MyFonts.poppins,
-                fontSize: 13,
-                color: textColor
-              ),
-            )
+          SizedBox(height: 2),
+          getDataTickWidget()
         ],
       ),
     );

@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:task_management_app_flutter/constants/MyColors.dart';
+import 'package:task_management_app_flutter/models/add_streak_info_model.dart';
+import 'package:task_management_app_flutter/providers/add_streak_info_provider.dart';
 
 import '../../constants/utils.dart';
 import '../../socket/services/socket_service.dart';
 import '../services/dashboard_services.dart';
+import '../widgets/day_widget.dart';
 
 class AddStreakScreen extends StatefulWidget {
   static const String routeName = "/add-streak-screen";
@@ -22,6 +25,8 @@ class _AddStreakScreenState extends State<AddStreakScreen> {
   final DashboardServices dashboardService = DashboardServices();
   bool isLoading = true;
   late Future<void> _fetchAddStreakInfo;
+  late AddStreakInfoModel addStreakInfoModel;
+
 
 
   @override
@@ -48,7 +53,8 @@ class _AddStreakScreenState extends State<AddStreakScreen> {
         onSuccess: () {
           setState(() {
             print("Dashboard data fetched successfully!");
-
+            addStreakInfoModel = Provider
+                .of<AddStreakInfoProvider>(context, listen: false).addStreakInfoModel;
             isLoading = false;
           });
         },
@@ -94,7 +100,23 @@ class _AddStreakScreenState extends State<AddStreakScreen> {
             body: SafeArea(
               child: Column(
                 children: [
-
+                  Container(
+                    height: 70, // Set the desired height
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween, // Spread items evenly
+                      children: List.generate(addStreakInfoModel.add_streak_week_range.length, (index) {
+                        return Container(
+                          width: 50,
+                          child: DayWidget(
+                            day: addStreakInfoModel.add_streak_week_range[index].day,
+                            isToday: addStreakInfoModel.add_streak_week_range[index].isToday,
+                            date: addStreakInfoModel.add_streak_week_range[index].date,
+                            hasDone: addStreakInfoModel.add_streak_week_range[index].hasDone,
+                          ),
+                        );
+                      }),
+                    ),
+                  ),
                 ],
               ),
             ),
