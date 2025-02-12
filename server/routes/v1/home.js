@@ -131,7 +131,7 @@ homeRouter.post('/v1/home/add-streak-info', auth, async (req, res) => {
         finalRes = {
             "week_range": weekRange,
             "streak": streak,
-            "streak_text": streak>1 ? "DAYS STREAK" : "DAY STREAK"
+            "streak_text": streak>1 ? "DAYS STREAK" : "DAY STREAK";
         }
 
 
@@ -162,7 +162,7 @@ homeRouter.post('/v1/home/fetch-tasks', auth, async (req, res)=>{
             attributes: ['task_type_id', 'task_type_name','unit'] // Only fetch task_type_name
           });
         
-          const currentDate = new Date();
+        const currentDate = new Date();
 
         weekRange = getWeekStartAndEndDates(currentDate);
 
